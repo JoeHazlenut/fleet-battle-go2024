@@ -3,20 +3,21 @@ LOVE = require "love"
 ------------------Graphic-Variables-----------------------
 local designwidth = 1280
 local designheight = 720
-local scalefactor = 2
-local translationfactor = {x = 2, y = 2}
 
---------------------Asset-Variables-----------------------
-local images = {}
-local font = nil
+local current_screen = {draw = function () LOVE.graphics.clear(1, 0, 0, 1) end}
 
 ---------------------------LOAD---------------------------
-function LOVE.load (args)
+function LOVE.load (arg)
+   for _, option in pairs(arg) do
+      if option == "-d" then
+         DEVHELP = require "engine/devhelp"
+      end
+   end
+
+
    love.graphics.setDefaultFilter("nearest", "nearest")
 
-   images.bg = love.graphics.newImage("assets/background.png")
-   images.maptools = love.graphics.newImage("assets/map_tools.png")
-   font = love.graphics.newFont("assets/pixelfont.otf")
+   current_screen = require "game/playscreen"
 end
 
 -------------------------UPDATE---------------------------
@@ -25,7 +26,11 @@ end
 
 ---------------------------DRAW---------------------------
 function LOVE.draw ()
-   love.graphics.draw(images.bg)
+   current_screen.draw()
+
+   if DEVHELP and DEVHELP.active then
+      DEVHELP.showGrid()
+   end
 end
 
 -----------------------KEYBOARD-EVENTS---------------------
@@ -34,5 +39,11 @@ function love.keypressed (key, scancode, isrepeat)
       LOVE.event.quit()
    elseif key == "f" then
       LOVE.window.setFullscreen(not LOVE.window.getFullscreen())
+   end
+
+   if DEVHELP then
+      if key == "g" then
+         DEVHELP.active = true
+      end
    end
 end
