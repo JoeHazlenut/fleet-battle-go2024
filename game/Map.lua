@@ -12,7 +12,8 @@ end
 
 function Map:draw ()
    local mx, my = LOVE.mouse.getPosition()
-   if mx > self.region.x  and mx < self.region.x + self.region.size then
+   if (mx > self.region.x and mx < self.region.x + self.region.size) and
+   (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((mx - self.region.x) / 32)
       local tile_y = math.floor((my - self.region.y) / 32)
       LOVE.graphics.draw(self.toolimage, self.quads.cursor, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
