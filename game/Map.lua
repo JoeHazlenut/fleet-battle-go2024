@@ -1,3 +1,4 @@
+------------------------------EXTERNAL----------------------------
 SHIPTYPES = {
    sub2 = "A",
    boad3 = "B",
@@ -18,10 +19,7 @@ MAPTOOLS = {
    selector = 9
 }
 
-------------------------------EXTERNAL----------------------------
 local Map = {
-   toolimage = LOVE.graphics.newImage("assets/map_tools.png"),
-   shipimage = LOVE.graphics.newImage("assets/ships.png"),
    types = {enemy = 0, player = 1},
    toolquads = {
       LOVE.graphics.newQuad(2 * 32, 0 * 32, 32, 32, 96, 320),  -- exclaim
@@ -43,6 +41,13 @@ Map.shipquads["B"] = LOVE.graphics.newQuad(0, 1 * 32, 3 * 32, 32, 160, 160)
 Map.shipquads["C"] = LOVE.graphics.newQuad(0, 2 * 32, 3 * 32, 32, 160, 160)
 Map.shipquads["D"] = LOVE.graphics.newQuad(0, 3 * 32, 4 * 32, 32, 160, 160)
 Map.shipquads["E"] = LOVE.graphics.newQuad(0, 4 * 32, 5 * 32, 32, 160, 160)
+
+function Map.init(toolimg, shipimg)
+   Map.toolimage = toolimg
+   Map.shipimage = shipimg
+
+   return Map
+end
 
 function Map:update ()
 end
@@ -76,10 +81,10 @@ function Map:draw ()
             else
                error("FATAL: Ship does not seem to have any adjacend tiles, which should not happen!")
             end
-            LOVE.graphics.draw(self.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * 32, self.region.y + (rownumber - 1) * 32, rotation, nil, nil, roffsetx, roffsety)
+            LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * 32, self.region.y + (rownumber - 1) * 32, rotation, nil, nil, roffsetx, roffsety)
          end
          if self.infolayer[rownumber][tilenumber] ~= 0 then
-            LOVE.graphics.draw(self.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + tilenumber * 32, self.region.y + rownumber * 32)
+            LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + tilenumber * 32, self.region.y + rownumber * 32)
          end
       end
    end
@@ -88,7 +93,7 @@ function Map:draw ()
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((mx - self.region.x) / 32)
       local tile_y = math.floor((my - self.region.y) / 32)
-      LOVE.graphics.draw(self.toolimage, self.currentcursor, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
+      LOVE.graphics.draw(Map.toolimage, self.currentcursor, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
    end
 end
 
@@ -96,18 +101,18 @@ function Map:new(type)
    local map = {
       shiplayer = {
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, "a", "A", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, "b", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, "b", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, "B", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, 0, "D", "d", "d", "d", 0, 0, "C", 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0, 0, "c", 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0, 0, "c", 0, 0, 0, 0, 0},
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-         {0, "e", "e", "e", "e", "E", 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       },
       infolayer = {
