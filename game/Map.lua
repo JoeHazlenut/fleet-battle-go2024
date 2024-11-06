@@ -33,32 +33,64 @@ end
 
 function Map:draw ()
    local mx, my = LOVE.mouse.getPosition()
+
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((mx - self.region.x) / 32)
       local tile_y = math.floor((my - self.region.y) / 32)
-      LOVE.graphics.draw(self.toolimage, self.current_cursor_quad, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
+      LOVE.graphics.draw(self.toolimage, self.currentcursor, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
+   end
+
+   --TODO: render also ships
+   for rownumber, row in ipairs(self.shiplayer) do
+      for tilenumber, col in ipairs(row) do
+         --[[if col ~= 0 then
+            LOVE.graphics.draw(self.toolimage, Map.quads[col], self.region.x + tilenumber * 32, self.region.y + rownumber * 32))
+         end--]]
+         if self.infolayer[rownumber][tilenumber] ~= 0 then
+            LOVE.graphics.draw(self.toolimage, Map.quads[self.infolayer[rownumber][tilenumber]], self.region.x + tilenumber * 32, self.region.y + rownumber * 32)
+         end
+      end
    end
 end
 
 function Map:new(type)
    local map = {
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      shiplayer = {
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      },
+      infolayer = {
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      },
+
       region = {x = 0, y = 0, size = 14 * 32},
-      current_cursor_quad = self.quads[MAPTOOLS.ring]
+      currentcursor = self.quads[MAPTOOLS.exclaim]
    }
 
    if type == self.types.enemy then
@@ -76,6 +108,27 @@ end
 
 function Map:setCurrentCursor(key)
    self.current_cursor = Map.quads[key]
+end
+
+function Map:onMouseClick(mx, my, button)
+   if (mx > self.region.x and mx < self.region.x + self.region.size) and
+   (my > self.region.y and my < self.region.y + self.region.size) then
+      -- find out corresponding tile for access into map array
+      local tile_x = math.floor((my - self.region.y) / 32)
+      local tile_y = math.floor((mx - self.region.x) / 32)
+
+      local selection = self.infolayer[tile_x][tile_y]
+      local maptool_indx = 0
+      if selection ~= self.currentcursor then
+         for indx, quad in ipairs(self.quads) do
+            if quad == self.currentcursor then
+               maptool_indx = indx
+               break
+            end
+         end
+         self.infolayer[tile_x][tile_y] = maptool_indx
+      end
+   end
 end
 
 return Map

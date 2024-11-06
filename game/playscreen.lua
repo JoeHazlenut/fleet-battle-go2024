@@ -23,4 +23,9 @@ function playscreen.draw ()
    playermap:draw()
 end
 
+function playscreen.onMouseClick(mx, my, button)
+   playermap:onMouseClick(mx, my, button)
+   enemymap:onMouseClick(mx, my, button)
+end
+
 return playscreen

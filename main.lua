@@ -40,7 +40,7 @@ function LOVE.draw ()
    LOVE.graphics.setColor(1, 1, 1, 1)
 end
 
------------------------KEYBOARD-EVENTS---------------------
+-----------------------INPUT-EVENTS---------------------
 function love.keypressed (key, scancode, isrepeat)
    if key == "escape" then
       LOVE.event.quit()
@@ -55,4 +55,9 @@ function love.keypressed (key, scancode, isrepeat)
          DEVHELP.debugmode = not DEVHELP.debugmode
       end
    end
+end
+
+function love.mousepressed (x, y, button, istouch, presses)
+   print("mouse")
+   current_screen.onMouseClick(x, y, button)
 end
