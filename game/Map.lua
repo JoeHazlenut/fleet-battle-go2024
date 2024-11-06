@@ -133,7 +133,7 @@ function Map:new(type)
       },
 
       region = {x = 0, y = 0, size = 14 * 32},
-      currentcursor = self.toolquads[MAPTOOLS.exclaim]
+      currentcursor = self.toolquads[MAPTOOLS.selector]
    }
 
    if type == self.types.enemy then
@@ -150,7 +150,7 @@ function Map:new(type)
 end
 
 function Map:setCurrentCursor(key)
-   self.current_cursor = Map.toolquads[key]
+   self.currentcursor = Map.toolquads[key]
 end
 
 function Map:onMouseClick(mx, my, button)

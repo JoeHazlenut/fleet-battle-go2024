@@ -23,6 +23,7 @@ end
 
 -------------------------UPDATE---------------------------
 function LOVE.update (dt)
+   current_screen.update(dt)
 end
 
 ---------------------------DRAW---------------------------
