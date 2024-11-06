@@ -1,8 +1,29 @@
+MAPTOOLS = {
+   exclaim = 1,
+   question = 2,
+   up = 3,
+   right = 4,
+   down = 5,
+   left = 6,
+   ring = 7,
+   aim = 8,
+   selector = 9
+}
+
+------------------------------EXTERNAL----------------------------
 local Map = {
    toolimage = LOVE.graphics.newImage("assets/map_tools.png"),
    types = {enemy = 0, player = 1},
    quads = {
-      cursor = LOVE.graphics.newQuad(2 * 32, 8 * 32, 32, 32, 96, 288)
+      LOVE.graphics.newQuad(2 * 32, 0 * 32, 32, 32, 96, 320),  -- exclaim
+      LOVE.graphics.newQuad(2 * 32, 1 * 32, 32, 32, 96, 320),  -- questionmark
+      LOVE.graphics.newQuad(2 * 32, 2 * 32, 32, 32, 96, 320),  -- up
+      LOVE.graphics.newQuad(2 * 32, 3 * 32, 32, 32, 96, 320),  -- right
+      LOVE.graphics.newQuad(2 * 32, 4 * 32, 32, 32, 96, 320),  -- down
+      LOVE.graphics.newQuad(2 * 32, 5 * 32, 32, 32, 96, 320),  --left
+      LOVE.graphics.newQuad(2 * 32, 6 * 32, 32, 32, 96, 320),  -- circle
+      LOVE.graphics.newQuad(2 * 32, 7 * 32, 32, 32, 96, 320),  -- aim
+      LOVE.graphics.newQuad(2 * 32, 8 * 32, 32, 32, 96, 320)   -- selector
    }
 }
 Map.__index = Map
@@ -37,7 +58,7 @@ function Map:new(type)
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       region = {x = 0, y = 0, size = 14 * 32},
-      current_cursor_quad = self.quads.cursor
+      current_cursor_quad = self.quads[MAPTOOLS.ring]
    }
 
    if type == self.types.enemy then
@@ -51,6 +72,10 @@ function Map:new(type)
    setmetatable(map, Map)
 
    return map
+end
+
+function Map:setCurrentCursor(key)
+   self.current_cursor = Map.quads[key]
 end
 
 return Map
