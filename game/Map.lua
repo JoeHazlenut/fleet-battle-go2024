@@ -16,7 +16,7 @@ function Map:draw ()
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((mx - self.region.x) / 32)
       local tile_y = math.floor((my - self.region.y) / 32)
-      LOVE.graphics.draw(self.toolimage, self.quads.cursor, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
+      LOVE.graphics.draw(self.toolimage, self.current_cursor_quad, (self.region.x + tile_x * 32), (self.region.y + tile_y * 32))
    end
 end
 
@@ -37,6 +37,7 @@ function Map:new(type)
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       region = {x = 0, y = 0, size = 14 * 32},
+      current_cursor_quad = self.quads.cursor
    }
 
    if type == self.types.enemy then

@@ -29,9 +29,15 @@ end
 function LOVE.draw ()
    current_screen.draw()
 
-   if DEVHELP and DEVHELP.active then
-      DEVHELP.showGrid()
+   if DEVHELP then
+      if DEVHELP.gridmode then
+         DEVHELP.showGrid()
+      elseif DEVHELP.debugmode then
+         DEVHELP.showSystemMetrics()
+      end
    end
+
+   LOVE.graphics.setColor(1, 1, 1, 1)
 end
 
 -----------------------KEYBOARD-EVENTS---------------------
@@ -44,7 +50,9 @@ function love.keypressed (key, scancode, isrepeat)
 
    if DEVHELP then
       if key == "g" then
-         DEVHELP.active = true
+         DEVHELP.gridmode = not DEVHELP.gridmode
+      elseif key == "d" then
+         DEVHELP.debugmode = not DEVHELP.debugmode
       end
    end
 end
