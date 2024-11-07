@@ -2,10 +2,10 @@ function love.conf (t)
    t.version = "11.5"
 
    t.window.title = "Fleet Battle Enigma"
-   t.window.width = 1280
-   t.window.height = 720
+   t.window.width = 960
+   t.window.height = 540
    t.window.fullscreen = false
-   t.window.fullscreentype = "exclusive"
+   t.window.fullscreentype = "desktop"
 
    t.modules.joystick = false
    t.modules.physics = false

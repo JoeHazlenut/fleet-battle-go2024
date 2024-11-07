@@ -1,8 +1,9 @@
 LOVE = require "love"
 
-------------------Graphic-Variables-----------------------
-local designwidth = 1280
-local designheight = 720
+------------------Window-Variables-----------------------
+DESIGNWIDTH = 960
+DESIGNHEIGHT = 540
+TILESIZE = 24
 
 local current_screen = {draw = function () LOVE.graphics.clear(1, 0, 0, 1) end}
 
@@ -47,6 +48,7 @@ function love.keypressed (key, scancode, isrepeat)
       LOVE.event.quit()
    elseif key == "f" then
       LOVE.window.setFullscreen(not LOVE.window.getFullscreen())
+      print(LOVE.window.getDesktopDimensions())
    end
 
    if DEVHELP then

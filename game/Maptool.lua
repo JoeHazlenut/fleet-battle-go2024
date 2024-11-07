@@ -2,7 +2,7 @@ local Maptool = {}
 Maptool.__index = Maptool
 
 function Maptool:update (mx, my)
-   if (mx > self.x and mx < self.x + 32) and (my > self.y and my < self.y + 32) then
+   if (mx > self.x and mx < self.x + TILESIZE) and (my > self.y and my < self.y + TILESIZE) then
       self.active = true
    else
       self.active = false

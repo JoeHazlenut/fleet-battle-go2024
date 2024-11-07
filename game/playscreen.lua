@@ -1,9 +1,9 @@
 
 ---------------------Internal-------------------
 local images = {
-   bg = LOVE.graphics.newImage("assets/background.png"),
-   toolimage = LOVE.graphics.newImage("assets/map_tools.png"),
-   shipimage = LOVE.graphics.newImage("assets/ships.png"),
+   bg = LOVE.graphics.newImage("assets/new/background.png"),
+   toolimage = LOVE.graphics.newImage("assets/new/tools.png"),
+   shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
    msgfont = LOVE.graphics.newFont("assets/pixelfont.otf")
 }
 
@@ -15,19 +15,18 @@ local playermap = Map:new(Map.types.player)
 local Maptool = require "game/Maptool"
 
 local maptools = {
-   Maptool:new(LOVE.graphics.newQuad(0, 0, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 0, 32, 32, 96, 320), images.toolimage, 19 * 32, 2 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 1 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 1 * 32, 32, 32, 96, 320), images.toolimage, 20 * 32, 2 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 2 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 2 * 32, 32, 32, 96, 320), images.toolimage, 19 * 32, 3 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 3 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 3 * 32, 32, 32, 96, 320), images.toolimage, 20 * 32, 3 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 4 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 4 * 32, 32, 32, 96, 320), images.toolimage, 19 * 32, 4 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 5 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 5 * 32, 32, 32, 96, 320), images.toolimage, 20 * 32, 4 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 6 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 6 * 32, 32, 32, 96, 320), images.toolimage, 19 * 32, 5 * 32),
-   Maptool:new(LOVE.graphics.newQuad(0, 7 * 32, 32, 32, 96, 320), LOVE.graphics.newQuad(32, 7 * 32, 32, 32, 96, 320), images.toolimage, 20 * 32, 5 * 32),
+   Maptool:new(LOVE.graphics.newQuad(0, 0, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 0, TILESIZE, TILESIZE, 72, 240), images.toolimage, 19 * TILESIZE, 2 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 1 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 1 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 20 * TILESIZE, 2 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 2 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 2 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 19 * TILESIZE, 3 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 3 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 3 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 20 * TILESIZE, 3 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 4 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 4 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 19 * TILESIZE, 4 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 5 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 5 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 20 * TILESIZE, 4 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 6 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 6 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 19 * TILESIZE, 5 * TILESIZE),
+   Maptool:new(LOVE.graphics.newQuad(0, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 20 * TILESIZE, 5 * TILESIZE),
 }
 
 --------------------External--------------------
 local playscreen = {}
-
 function playscreen.update (dt)
    local mx, my = LOVE.mouse.getPosition()
    for _, tool in ipairs(maptools) do
