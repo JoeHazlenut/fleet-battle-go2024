@@ -5,7 +5,11 @@ DESIGNWIDTH = 960
 DESIGNHEIGHT = 540
 TILESIZE = 24
 
-local current_screen = {draw = function () LOVE.graphics.clear(1, 0, 0, 1) end}
+local translationfactor = {x = 1, y = 1}
+SCALEFACTOR = 1
+INPUTCORRECTION = 1 / SCALEFACTOR
+
+local current_screen = {draw = function (scale) LOVE.graphics.clear(1, 0, 0, 1) end}
 
 ---------------------------LOAD---------------------------
 function LOVE.load (arg)
@@ -29,7 +33,15 @@ end
 
 ---------------------------DRAW---------------------------
 function LOVE.draw ()
-   current_screen.draw()
+   LOVE.graphics.push()
+   LOVE.graphics.translate(translationfactor.x, translationfactor.y)
+   LOVE.graphics.scale(SCALEFACTOR, SCALEFACTOR)
+
+   current_screen.draw(SCALEFACTOR)
+
+   LOVE.graphics.scale(1 / SCALEFACTOR, 1 / SCALEFACTOR)
+   LOVE.graphics.translate(-translationfactor.x, -translationfactor.y)
+   LOVE.graphics.pop()
 
    if DEVHELP then
       if DEVHELP.gridmode then
@@ -48,7 +60,29 @@ function love.keypressed (key, scancode, isrepeat)
       LOVE.event.quit()
    elseif key == "f" then
       LOVE.window.setFullscreen(not LOVE.window.getFullscreen())
-      print(LOVE.window.getDesktopDimensions())
+
+      if LOVE.window.getFullscreen() then
+         local screenw, screenh = LOVE.window.getDesktopDimensions()
+         local aspectratio = screenw / screenh
+
+         if aspectratio > 1 then
+            SCALEFACTOR = math.floor(screenh / DESIGNHEIGHT)
+            print(screenh .. "/" .. DESIGNHEIGHT)
+         else
+            SCALEFACTOR = math.floor(screenw / DESIGNWIDTH)
+         end
+
+         translationfactor.x = math.floor(screenw / 2 - (SCALEFACTOR * DESIGNWIDTH) / 2)
+         translationfactor.y = math.floor(screenh / 2 - (SCALEFACTOR * DESIGNHEIGHT) / 2)
+         
+         INPUTCORRECTION = 1 / SCALEFACTOR
+      else
+         SCALEFACTOR = 1
+         translationfactor.x = 1
+         translationfactor.y = 1
+
+         INPUTCORRECTION = 1 / SCALEFACTOR
+      end
    end
 
    if DEVHELP then
@@ -61,6 +95,9 @@ function love.keypressed (key, scancode, isrepeat)
 end
 
 function love.mousepressed (x, y, button, istouch, presses)
-   print("mouse")
+   if SCALEFACTOR ~= 1 then
+      x = x * INPUTCORRECTION
+      y = y * INPUTCORRECTION
+   end
    current_screen.onMouseClick(x, y, button)
 end

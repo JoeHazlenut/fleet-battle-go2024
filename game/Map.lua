@@ -54,6 +54,11 @@ end
 
 function Map:draw ()
    local mx, my = LOVE.mouse.getPosition()
+   if SCALEFACTOR ~= 1 then
+      mx = mx * INPUTCORRECTION
+      my = my * INPUTCORRECTION
+   end
+
    local shiptypes_str = "ABCDE"
    local rotation = 0
    local roffsetx = 0

@@ -29,6 +29,10 @@ local maptools = {
 local playscreen = {}
 function playscreen.update (dt)
    local mx, my = LOVE.mouse.getPosition()
+   if SCALEFACTOR ~= 1 then
+      mx = mx * INPUTCORRECTION
+      my = my * INPUTCORRECTION
+   end
    for _, tool in ipairs(maptools) do
       tool:update(mx, my)
    end
@@ -37,15 +41,15 @@ function playscreen.update (dt)
    playermap:update(dt)
 end
 
-function playscreen.draw ()
+function playscreen.draw (scale)
    LOVE.graphics.draw(images.bg)
 
    for _, tool in ipairs(maptools) do
       tool:draw()
    end
 
-   enemymap:draw()
-   playermap:draw()
+   enemymap:draw(scale)
+   playermap:draw(scale)
 end
 
 function playscreen.onMouseClick(mx, my, button)
