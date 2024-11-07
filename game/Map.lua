@@ -84,7 +84,7 @@ function Map:draw ()
             LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * 32, self.region.y + (rownumber - 1) * 32, rotation, nil, nil, roffsetx, roffsety)
          end
          if self.infolayer[rownumber][tilenumber] ~= 0 then
-            LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + tilenumber * 32, self.region.y + rownumber * 32)
+            LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 1) * 32, self.region.y + (rownumber - 1) * 32)
          end
       end
    end
@@ -156,8 +156,8 @@ end
 function Map:onMouseClick(mx, my, button)
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
-      local tile_x = math.floor((my - self.region.y) / 32)
-      local tile_y = math.floor((mx - self.region.x) / 32)
+      local tile_x = math.floor((my - self.region.y) / 32) + 1
+      local tile_y = math.floor((mx - self.region.x) / 32) + 1
 
       local selection = self.infolayer[tile_x][tile_y]
       local maptool_indx = 0
