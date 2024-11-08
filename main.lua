@@ -39,10 +39,6 @@ function LOVE.draw ()
 
    current_screen.draw(SCALEFACTOR)
 
-   LOVE.graphics.scale(1 / SCALEFACTOR, 1 / SCALEFACTOR)
-   LOVE.graphics.translate(-translationfactor.x, -translationfactor.y)
-   LOVE.graphics.pop()
-
    if DEVHELP then
       if DEVHELP.gridmode then
          DEVHELP.showGrid()
@@ -50,6 +46,10 @@ function LOVE.draw ()
          DEVHELP.showSystemMetrics()
       end
    end
+
+   LOVE.graphics.scale(1 / SCALEFACTOR, 1 / SCALEFACTOR)
+   LOVE.graphics.translate(-translationfactor.x, -translationfactor.y)
+   LOVE.graphics.pop()
 
    LOVE.graphics.setColor(1, 1, 1, 1)
 end

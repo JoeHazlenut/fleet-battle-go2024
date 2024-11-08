@@ -23,6 +23,11 @@ function devhelp.showGrid ()
    end
 
    local mx, my = LOVE.mouse.getPosition()
+   if SCALEFACTOR ~= 1 then
+      mx = mx * INPUTCORRECTION
+      my = my * INPUTCORRECTION
+   end
+
    LOVE.graphics.setColor(0, 1, 0, 0.1)
    LOVE.graphics.rectangle("fill", math.floor(mx / TILESIZE) * TILESIZE, math.floor(my / TILESIZE) * TILESIZE, TILESIZE, TILESIZE)
    LOVE.graphics.setColor(0, 1, 0, 1)
