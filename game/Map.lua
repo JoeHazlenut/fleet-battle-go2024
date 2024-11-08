@@ -175,7 +175,9 @@ function Map:onMouseClick(mx, my, button)
                break
             end
          end
-         self.infolayer[tile_x][tile_y] = maptool_indx
+         if maptool_indx < 9 then
+            self.infolayer[tile_x][tile_y] = maptool_indx
+         end
       end
    end
 end
