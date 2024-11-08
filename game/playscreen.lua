@@ -39,7 +39,8 @@ local placeShipState = {
       Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 10 * TILESIZE, 3 * TILESIZE, TILESIZE),
       Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 12 * TILESIZE, 4 * TILESIZE, TILESIZE),
       Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 14 * TILESIZE, 4 * TILESIZE, TILESIZE)
-   }
+   },
+   font = LOVE.graphics.newFont("assets/pixelfont.otf", 18)
 }
 
 function placeShipState.update (dt)
@@ -62,6 +63,10 @@ function placeShipState.draw ()
    for _, button in pairs(placeShipState.buttons) do
       button:draw()
    end
+
+   LOVE.graphics.setFont(placeShipState.font)
+   LOVE.graphics.setColor(0.52, 0.96,  0.52, 0.8)
+   LOVE.graphics.print("Place Ships:", 25 * TILESIZE, 3 * TILESIZE)
 end
 
 function placeShipState.onMouseClick (mx, my, button)
