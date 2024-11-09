@@ -61,7 +61,7 @@ end
 function placeShipState.draw ()
    LOVE.graphics.draw(images.selectbg)
 
-   playermap:draw()
+   playermap:draw(placeShipState.selship.facing)
 
    for _, button in pairs(placeShipState.buttons) do
       button:draw()

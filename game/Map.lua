@@ -53,7 +53,7 @@ end
 function Map:update ()
 end
 
-function Map:draw ()
+function Map:draw (shipcursor_facing)
    local mx, my = LOVE.mouse.getPosition()
    if SCALEFACTOR ~= 1 then
       mx = mx * INPUTCORRECTION
@@ -100,7 +100,27 @@ function Map:draw ()
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((mx - self.region.x) / TILESIZE)
       local tile_y = math.floor((my - self.region.y) / TILESIZE)
-      LOVE.graphics.draw(self.cursorimg, self.currentcursor, (self.region.x + tile_x * TILESIZE), (self.region.y + tile_y * TILESIZE))
+
+      rotation = 0
+      roffsetx = 0
+      roffsety = 0
+      if shipcursor_facing then
+         if shipcursor_facing == 1 then
+            rotation = math.rad(90)
+            roffsetx = 0
+            roffsety = TILESIZE
+         elseif shipcursor_facing == 2 then
+            rotation = math.rad(180)
+            roffsetx = TILESIZE
+            roffsety = TILESIZE
+         elseif shipcursor_facing == 3 then
+            rotation = math.rad(-90)
+            roffsetx = TILESIZE
+            roffsety = 0
+         end
+      end
+
+      LOVE.graphics.draw(self.cursorimg, self.currentcursor, (self.region.x + tile_x * TILESIZE), (self.region.y + tile_y * TILESIZE), rotation, nil, nil, roffsetx, roffsety)
    end
 end
 
