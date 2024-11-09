@@ -1,7 +1,7 @@
 local Button = {}
 Button.__index = Button
 
-function Button:new (img, normalq, hoverq, selectedq, x, y, w, h)
+function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback)
    local newbutton = {
       srcimg = img,
       nq = normalq,
@@ -12,7 +12,8 @@ function Button:new (img, normalq, hoverq, selectedq, x, y, w, h)
       w = w or 0,
       h = h or 0,
       hot = false,
-      active = false
+      active = false,
+      action = callback
    }
 
    setmetatable(newbutton, Button)
@@ -22,7 +23,9 @@ end
 
 function Button:isMouseInside(mx, my)
    if (mx > self.x and mx < self.x + self.w) and (my > self.y and my < self.y + self.h) then
-      self.hot = true
+      if not self.active then
+         self.hot = true
+      end
    else
       self.hot = false
    end
