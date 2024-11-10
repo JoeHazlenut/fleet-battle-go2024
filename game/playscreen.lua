@@ -6,7 +6,7 @@ local images = {
    shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
    selectimage = LOVE.graphics.newImage("assets/new/place_ship_ui.png"),
    shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
-   msgfont = LOVE.graphics.newFont("assets/pixelfont.otf")
+   msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
 
 local Map = require "game/Map".init(images.toolimage, images.shipimage)
@@ -42,10 +42,10 @@ local placeShipState = {
       Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 11 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("D") return "D", SHIPFACING.left end),
       Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 13 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end),
    },
-   font = LOVE.graphics.newFont("assets/pixelfont.otf", 18),
+   font = LOVE.graphics.newFont("assets/pixelfont.ttf", 16),
    selship = {},
    ships_to_place = 5,
-   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(3 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(6 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 3 * TILESIZE, TILESIZE, function () print("confirm") end, "CONFIRM")
+   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm") end, "CONFIRM")
 }
 
 function placeShipState.update (dt)

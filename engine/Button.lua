@@ -1,5 +1,5 @@
 local Button = {
-   font = LOVE.graphics.newFont("assets/pixelfont.otf", 11),
+   font = LOVE.graphics.newFont("assets/pixelfont.ttf", 12),
    color = {0.44, 0.8, 0.44, 1}
 }
 Button.__index = Button
