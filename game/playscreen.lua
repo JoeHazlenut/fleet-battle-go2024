@@ -10,8 +10,8 @@ local images = {
 }
 
 local Map = require "game/Map".init(images.toolimage, images.shipimage)
+local playermap = require "game/playermap"
 
-local playermap = Map:new(Map.types.enemy)
 local enemymap = Map:new(Map.types.player)
 
 local Maptool = require "game/Maptool"
@@ -36,14 +36,15 @@ local Button = require "engine/Button"
 local placeShipState = {
    nr = 1,
    buttons = {
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 6 * TILESIZE, 2 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("A") return "A", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 8 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("B") return "B", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 10 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("C") return "C", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 12 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("D") return "D", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), 28 * TILESIZE, 14 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end)
+      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 120), 29 * TILESIZE, 5 * TILESIZE, 2 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("A") return "A", SHIPFACING.left end),
+      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), 29 * TILESIZE, 7 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("B") return "B", SHIPFACING.left end),
+      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 120), 29 * TILESIZE, 9 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("C") return "C", SHIPFACING.left end),
+      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 120), 29 * TILESIZE, 11 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("D") return "D", SHIPFACING.left end),
+      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 120), 29 * TILESIZE, 13 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end)
    },
    font = LOVE.graphics.newFont("assets/pixelfont.otf", 18),
-   selship = {}
+   selship = {},
+   ships_to_place = 5
 }
 
 function placeShipState.update (dt)
@@ -61,7 +62,7 @@ end
 function placeShipState.draw ()
    LOVE.graphics.draw(images.selectbg)
 
-   playermap:draw(placeShipState.selship.facing)
+   playermap:drawPlaceShips(placeShipState.selship.facing)
 
    for _, button in pairs(placeShipState.buttons) do
       button:draw()
@@ -69,7 +70,12 @@ function placeShipState.draw ()
 
    LOVE.graphics.setFont(placeShipState.font)
    LOVE.graphics.setColor(0.52, 0.96,  0.52, 0.8)
-   LOVE.graphics.print("Place Ships:", 25 * TILESIZE, 3 * TILESIZE)
+   LOVE.graphics.print("Place Ships:", 24 * TILESIZE, 3 * TILESIZE)
+   LOVE.graphics.print("Type A: ", 24 * TILESIZE, 5 * TILESIZE)
+   LOVE.graphics.print("Type B: ", 24 * TILESIZE, 7 * TILESIZE)
+   LOVE.graphics.print("Type C: ", 24 * TILESIZE, 9 * TILESIZE)
+   LOVE.graphics.print("Type D: ", 24 * TILESIZE, 11 * TILESIZE)
+   LOVE.graphics.print("Type E: ", 24 * TILESIZE, 13* TILESIZE)
 end
 
 function placeShipState.onMouseClick (mx, my, button)
@@ -79,6 +85,7 @@ function placeShipState.onMouseClick (mx, my, button)
          button.hot = false
          if button.action then
             placeShipState.selship.letter, placeShipState.selship.facing = button.action()
+            placeShipState.ships_to_place = placeShipState.ships_to_place - 1
          end
       elseif button.active and not button.hot then
          button.active = false
