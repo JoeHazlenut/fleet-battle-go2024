@@ -1,7 +1,10 @@
-local Button = {}
+local Button = {
+   font = LOVE.graphics.newFont("assets/pixelfont.otf", 11),
+   color = {0.44, 0.8, 0.44, 1}
+}
 Button.__index = Button
 
-function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback)
+function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback, text)
    local newbutton = {
       srcimg = img,
       nq = normalq,
@@ -13,8 +16,14 @@ function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback)
       h = h or 0,
       hot = false,
       active = false,
-      action = callback
+      action = callback,
+      txt = text
    }
+
+   if newbutton.txt then
+      newbutton.txtx = newbutton.x + (newbutton.w / 2) - (Button.font:getWidth(newbutton.txt) / 2)
+      newbutton.txty = newbutton.y + (newbutton.h / 2) - (Button.font:getHeight(newbutton.txt) / 2)
+   end
 
    setmetatable(newbutton, Button)
 
@@ -40,6 +49,13 @@ function Button:draw ()
       LOVE.graphics.draw(self.srcimg, self.sq, self.x, self.y)
    else
       LOVE.graphics.draw(self.srcimg, self.nq, self.x, self.y)
+   end
+
+   --TODO: individual colors
+   if self.txt then
+      LOVE.graphics.setFont(Button.font)
+      LOVE.graphics.setColor(Button.color)
+      LOVE.graphics.print(self.txt, self.txtx, self.txty)
    end
 end
 

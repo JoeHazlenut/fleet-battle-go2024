@@ -45,7 +45,7 @@ local placeShipState = {
    font = LOVE.graphics.newFont("assets/pixelfont.otf", 18),
    selship = {},
    ships_to_place = 5,
-   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(3 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(6 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 3 * TILESIZE, TILESIZE, function () print("confirm") end)
+   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(3 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(6 * TILESIZE, 5 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 3 * TILESIZE, TILESIZE, function () print("confirm") end, "CONFIRM")
 }
 
 function placeShipState.update (dt)
