@@ -1,3 +1,5 @@
+local love = require "love"
+
 function love.conf (t)
    t.version = "11.5"
 
@@ -6,6 +8,8 @@ function love.conf (t)
    t.window.height = 540
    t.window.fullscreen = false
    t.window.fullscreentype = "desktop"
+
+   t.consule = false
 
    t.modules.joystick = false
    t.modules.physics = false

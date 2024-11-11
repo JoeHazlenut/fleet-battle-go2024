@@ -191,7 +191,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
          end
 
          local tiles = {}
-         
+
          if facing == SHIPFACING.up then
             local y = ytile
             for step = 1, shipsize do
@@ -205,7 +205,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
             for i, row in pairs(tiles) do
                self.shiplayer[row][xtile] = string.lower(type)
             end
-      
+
          elseif facing == SHIPFACING.right then
             local x = xtile
             for step = 1, shipsize do
@@ -265,72 +265,54 @@ end
 
 function Map:pickUpPlacedShip(row, col)
    local shiptype = self.shiplayer[row][col]
-
-   local shiptilecntr = 0
+   local facing = SHIPFACING.left
+   self.shiplayer[row][col] = 0
 
    local up = row - 1
    while up > 0 do
-      if self.shiplayer[up][col] == shiptype or self.shiplayer[up][col] == string.lower(shiptype) then
+      if self.shiplayer[up][col] == string.upper(shiptype) or self.shiplayer[up][col] == string.lower(shiptype) then
          self.shiplayer[up][col] = 0
          up = up - 1
-         shiptilecntr = shiptilecntr + 1
+         facing = SHIPFACING.up
       else
          break
       end
-   end
-
-   if shiptilecntr > 0 then
-      self.shiplayer[row][col] = 0
-      return shiptype, SHIPFACING.down
    end
 
    local right = col + 1
    while right < 16 do
-      if self.shiplayer[row][right] == shiptype or self.shiplayer[row][right] == string.lower(shiptype) then
+      if self.shiplayer[row][right] == string.upper(shiptype)  or self.shiplayer[row][right] == string.lower(shiptype) then
          self.shiplayer[row][right] = 0
          right = right + 1
-         shiptilecntr = shiptilecntr + 1
+         facing = SHIPFACING.right
       else
          break
       end
-   end
-
-   if shiptilecntr > 0 then
-      self.shiplayer[row][col] = 0
-      return shiptype, SHIPFACING.left
    end
 
    local down = row + 1
    while down < 16 do
-      if self.shiplayer[down][col] == shiptype or self.shiplayer[down][col] == string.lower(shiptype) then
+      if self.shiplayer[down][col] == string.upper(shiptype) or self.shiplayer[down][col] == string.lower(shiptype) then
          self.shiplayer[down][col] = 0
          down = down + 1
-         shiptilecntr = shiptilecntr + 1
+         facing = SHIPFACING.down
       else
          break
       end
    end
 
-   if shiptilecntr > 0 then
-      self.shiplayer[row][col] = 0
-      return shiptype, SHIPFACING.up
-   end
-
-   local left = col + 1
+   local left = col - 1
    while left > 0 do
-      if self.shiplayer[row][left] == shiptype or self.shiplayer[row][left] == string.lower(shiptype) then
+      if self.shiplayer[row][left] == string.upper(shiptype) or self.shiplayer[row][left] == string.lower(shiptype) then
          self.shiplayer[row][left] = 0
          left = left - 1
-         shiptilecntr = shiptilecntr + 1
+         facing = SHIPFACING.left
       else
          break
       end
    end
 
-   if shiptilecntr > 0 then
-      self.shiplayer[row][col] = 0
-      return shiptype, SHIPFACING.right
-   end
+   return string.upper(shiptype), facing
 end
 
 function Map:printSL()

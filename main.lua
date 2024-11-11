@@ -59,7 +59,7 @@ function LOVE.draw ()
 end
 
 -----------------------INPUT-EVENTS---------------------
-function love.keypressed (key, scancode, isrepeat)
+function LOVE.keypressed (key, scancode, isrepeat)
    if key == "escape" then
       LOVE.event.quit()
    elseif key == "f" then
@@ -97,7 +97,7 @@ function love.keypressed (key, scancode, isrepeat)
    end
 end
 
-function love.mousepressed (x, y, button, istouch, presses)
+function LOVE.mousepressed (x, y, button, istouch, presses)
    if SCALEFACTOR ~= 1 then
       x = x * INPUTCORRECTION
       y = y * INPUTCORRECTION
