@@ -90,6 +90,7 @@ function Map:new(type)
       region = {x = 0, y = 0, size = 15 * TILESIZE},
       currentcursor = self.toolquads[MAPTOOLS.selector],
       cursorimg = Map.toolimage,
+      cursorkey = MAPTOOLS.selector
    }
 
    if type == self.types.player then
@@ -134,11 +135,18 @@ function Map:draw (shipcursor_facing)
 end
 
 function Map:setCurrentCursor (key)
+   self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage
 end
 
+function Map:getCursorKey ()
+   return self.cursorkey
+end
+
 function Map:setCursorToShip (key)
+   print(key)
+   self.cursorkey = key
    self.currentcursor = Map.shipquads[key]
    self.cursorimg = Map.shipimage
 end
@@ -166,8 +174,6 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
 end
 
 function Map:onLeftClickPlaceShip (mx, my, type, facing)
-   print(type)
-   print(facing)
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
       local xtile = math.floor((mx - self.region.x) / TILESIZE) + 1
@@ -244,9 +250,86 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
          end
 
          self.shiplayer[ytile][xtile] = type
-         self:printSL()
+         --self:printSL()
          return true
       end
+   end
+end
+
+function Map:getWhatsOnMapAt (mx, my)
+   local col = math.floor((mx - self.region.x) / TILESIZE) + 1
+   local row = math.floor((my - self.region.y) / TILESIZE) + 1
+
+   return self.shiplayer[row][col], row, col
+end
+
+function Map:pickUpPlacedShip(row, col)
+   local shiptype = self.shiplayer[row][col]
+
+   local shiptilecntr = 0
+
+   local up = row - 1
+   while up > 0 do
+      if self.shiplayer[up][col] == shiptype or self.shiplayer[up][col] == string.lower(shiptype) then
+         self.shiplayer[up][col] = 0
+         up = up - 1
+         shiptilecntr = shiptilecntr + 1
+      else
+         break
+      end
+   end
+
+   if shiptilecntr > 0 then
+      self.shiplayer[row][col] = 0
+      return shiptype, SHIPFACING.down
+   end
+
+   local right = col + 1
+   while right < 16 do
+      if self.shiplayer[row][right] == shiptype or self.shiplayer[row][right] == string.lower(shiptype) then
+         self.shiplayer[row][right] = 0
+         right = right + 1
+         shiptilecntr = shiptilecntr + 1
+      else
+         break
+      end
+   end
+
+   if shiptilecntr > 0 then
+      self.shiplayer[row][col] = 0
+      return shiptype, SHIPFACING.left
+   end
+
+   local down = row + 1
+   while down < 16 do
+      if self.shiplayer[down][col] == shiptype or self.shiplayer[down][col] == string.lower(shiptype) then
+         self.shiplayer[down][col] = 0
+         down = down + 1
+         shiptilecntr = shiptilecntr + 1
+      else
+         break
+      end
+   end
+
+   if shiptilecntr > 0 then
+      self.shiplayer[row][col] = 0
+      return shiptype, SHIPFACING.up
+   end
+
+   local left = col + 1
+   while left > 0 do
+      if self.shiplayer[row][left] == shiptype or self.shiplayer[row][left] == string.lower(shiptype) then
+         self.shiplayer[row][left] = 0
+         left = left - 1
+         shiptilecntr = shiptilecntr + 1
+      else
+         break
+      end
+   end
+
+   if shiptilecntr > 0 then
+      self.shiplayer[row][col] = 0
+      return shiptype, SHIPFACING.right
    end
 end
 

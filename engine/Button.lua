@@ -1,5 +1,5 @@
 local Button = {
-   font = LOVE.graphics.newFont("assets/pixelfont.ttf", 12),
+   font = LOVE.graphics.newFont("assets/pixelfont.ttf", 8),
    color = {0.44, 0.8, 0.44, 1}
 }
 Button.__index = Button
@@ -17,7 +17,8 @@ function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback, text
       hot = false,
       active = false,
       action = callback,
-      txt = text
+      txt = text,
+      visible = true
    }
 
    if newbutton.txt then
@@ -31,31 +32,35 @@ function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback, text
 end
 
 function Button:isMouseInside(mx, my)
-   if (mx > self.x and mx < self.x + self.w) and (my > self.y and my < self.y + self.h) then
-      if not self.active then
-         self.hot = true
+   if self.visible then
+      if (mx > self.x and mx < self.x + self.w) and (my > self.y and my < self.y + self.h) then
+         if not self.active then
+            self.hot = true
+         end
+      else
+         self.hot = false
       end
-   else
-      self.hot = false
-   end
 
-   return self.hot
+      return self.hot
+   end
 end
 
 function Button:draw ()
-   if self.hot then
-      LOVE.graphics.draw(self.srcimg, self.hq, self.x, self.y)
-   elseif self.active then
-      LOVE.graphics.draw(self.srcimg, self.sq, self.x, self.y)
-   else
-      LOVE.graphics.draw(self.srcimg, self.nq, self.x, self.y)
-   end
+   if self.visible then
+      if self.hot then
+         LOVE.graphics.draw(self.srcimg, self.hq, self.x, self.y)
+      elseif self.active then
+         LOVE.graphics.draw(self.srcimg, self.sq, self.x, self.y)
+      else
+         LOVE.graphics.draw(self.srcimg, self.nq, self.x, self.y)
+      end
 
-   --TODO: individual colors
-   if self.txt then
-      LOVE.graphics.setFont(Button.font)
-      LOVE.graphics.setColor(Button.color)
-      LOVE.graphics.print(self.txt, self.txtx, self.txty)
+      --TODO: individual colors
+      if self.txt then
+         LOVE.graphics.setFont(Button.font)
+         LOVE.graphics.setColor(Button.color)
+         LOVE.graphics.print(self.txt, self.txtx, self.txty)
+      end
    end
 end
 

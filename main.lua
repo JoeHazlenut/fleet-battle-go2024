@@ -1,3 +1,7 @@
+if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
+   require("lldebugger").start()
+end
+
 LOVE = require "love"
 
 ------------------Window-Variables-----------------------
@@ -19,7 +23,7 @@ function LOVE.load (arg)
       end
    end
 
-   love.graphics.setDefaultFilter("nearest", "nearest")
+   LOVE.graphics.setDefaultFilter("nearest", "nearest")
 
    current_screen = require "game/playscreen"
 
@@ -67,7 +71,6 @@ function love.keypressed (key, scancode, isrepeat)
 
          if aspectratio > 1 then
             SCALEFACTOR = math.floor(screenh / DESIGNHEIGHT)
-            print(screenh .. "/" .. DESIGNHEIGHT)
          else
             SCALEFACTOR = math.floor(screenw / DESIGNWIDTH)
          end
