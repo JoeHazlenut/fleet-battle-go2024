@@ -11,8 +11,7 @@ local images = {
 
 local Map = require "game/Map".init(images.toolimage, images.shipimage)
 local playermap = require "game/playermap"
-
-local enemymap = Map:new(Map.types.player)
+local enemymap = require "game/enemymap"
 
 local Maptool = require "game/Maptool"
 
@@ -32,22 +31,59 @@ local maptools = {
 
 local Button = require "engine/Button"
 
+----------------------BATTLE--------------------
+local battleState = {
+}
+
+function battleState.setUp ()
+   enemymap:generateEnemyBoard ()
+end
+
+function battleState.update (dt)
+   local mx, my = LOVE.mouse.getPosition()
+   if SCALEFACTOR ~= 1 then
+      mx = mx * INPUTCORRECTION
+      my = my * INPUTCORRECTION
+   end
+   for _, tool in ipairs(maptools) do
+      tool:update(mx, my)
+   end
+
+   enemymap:update(dt)
+   playermap:update(dt)
+end
+
+function battleState.draw ()
+   LOVE.graphics.draw(images.bg)
+
+   for _, tool in ipairs(maptools) do
+      tool:draw()
+   end
+
+   enemymap:draw()
+   playermap:draw()
+end
+
+function battleState.onMouseClick (mx, my, button)
+   for key, tool in ipairs(maptools) do
+      if tool.active then
+         playermap:setCurrentCursor(key)
+         enemymap:setCurrentCursor(key)
+      end
+   end
+
+   playermap:onMouseClick(mx, my, button)
+   enemymap:onMouseClick(mx, my, button)
+end
+
 -------------------PLACESHIPS-------------------
 local placeShipState = {
-   nr = 1,
-   buttons = {
-     --[[ Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 5 * TILESIZE, 2 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("A") return "A", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 7 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("B") return "B", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 9 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("C") return "C", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 11 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("D") return "D", SHIPFACING.left end),
-      Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 13 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end),]]
-   },
+   buttons = {},
    font = LOVE.graphics.newFont("assets/pixelfont.ttf", 16),
    selship = {},
    ships_to_place = 5,
-   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm") end, "CONFIRM")
+   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm not defined") end, "CONFIRM")
 }
-
 placeShipState.buttons["A"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 5 * TILESIZE, 2 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("A") return "A", SHIPFACING.left end)
 placeShipState.buttons["B"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 7 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("B") return "B", SHIPFACING.left end)
 placeShipState.buttons["C"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 9 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("C") return "C", SHIPFACING.left end)
@@ -107,29 +143,32 @@ function placeShipState.onMouseClick (mx, my, mb)
       end
    end
 
-   if placeShipState.selship.letter ~= "" then -- this means, we place a ship down
-      if mb == 1 then
-         if playermap:onLeftClickPlaceShip(mx, my, placeShipState.selship.letter, placeShipState.selship.facing) then
-            placeShipState.ships_to_place = placeShipState.ships_to_place - 1
-            placeShipState.buttons[playermap:getCursorKey()].visible = false
+   if playermap:isInputInsideRegion(mx, my) then
+      if placeShipState.selship.letter ~= "" then -- this means, we place a ship down
+         if mb == 1 then
+            if playermap:onLeftClickPlaceShip(mx, my, placeShipState.selship.letter, placeShipState.selship.facing) then
+               placeShipState.ships_to_place = placeShipState.ships_to_place - 1
+               placeShipState.buttons[playermap:getCursorKey()].visible = false
 
-            playermap:setCurrentCursor(MAPTOOLS.selector)
-            placeShipState.selship.letter = ""
-            placeShipState.selship.facing = SHIPFACING.left
+               playermap:setCurrentCursor(MAPTOOLS.selector)
+               placeShipState.selship.letter = ""
+               placeShipState.selship.facing = SHIPFACING.left
+            end
+         elseif mb == 2 then
+            placeShipState.selship.facing = placeShipState.selship.facing + 1
+            if placeShipState.selship.facing > SHIPFACING.left then
+               placeShipState.selship.facing = SHIPFACING.up
+            end
          end
-      elseif mb == 2 then
-         placeShipState.selship.facing = placeShipState.selship.facing + 1
-         if placeShipState.selship.facing > SHIPFACING.left then
-            placeShipState.selship.facing = SHIPFACING.up
+      else -- could be a repickup of placed ship
+         local selection, r, c = playermap:getWhatsOnMapAt(mx, my)
+         if selection ~= 0 then
+            placeShipState.selship.letter, placeShipState.selship.facing = playermap:pickUpPlacedShip(r, c)
+            playermap:setCursorToShip(placeShipState.selship.letter)
+            placeShipState.buttons[placeShipState.selship.letter].visible = true
+            placeShipState.buttons[placeShipState.selship.letter].active = true
+            placeShipState.ships_to_place = placeShipState.ships_to_place + 1
          end
-      end
-   else -- could be a repickup of placed ship
-      local selection, r, c = playermap:getWhatsOnMapAt(mx, my)
-      if selection ~= 0 then
-         placeShipState.selship.letter, placeShipState.selship.facing = playermap:pickUpPlacedShip(r, c)
-         playermap:setCursorToShip(placeShipState.selship.letter)
-         placeShipState.buttons[placeShipState.selship.letter].visible = true
-         placeShipState.buttons[placeShipState.selship.letter].active = true
       end
    end
 
@@ -139,49 +178,23 @@ function placeShipState.onMouseClick (mx, my, mb)
    end
 end
 
-----------------------BATTLE--------------------
-local battleState = {
-   nr = 2
-}
-
-function battleState.update (dt)
-   local mx, my = LOVE.mouse.getPosition()
-   if SCALEFACTOR ~= 1 then
-      mx = mx * INPUTCORRECTION
-      my = my * INPUTCORRECTION
-   end
-   for _, tool in ipairs(maptools) do
-      tool:update(mx, my)
+function placeShipState.reset ()
+   for _, button in pairs(placeShipState.buttons) do
+      button.active = false
+      button.hot = false
    end
 
-   enemymap:update(dt)
-   playermap:update(dt)
+   placeShipState.confbutton.active = false
+   placeShipState.confbutton.visible = false
+
+   placeShipState.selship.facing = SHIPFACING.left
+   placeShipState.selship.letter = ""
+   placeShipState.selship.ships_to_place = 5
 end
 
-function battleState.draw ()
-   LOVE.graphics.draw(images.bg)
-
-   for _, tool in ipairs(maptools) do
-      tool:draw()
-   end
-
-   enemymap:draw()
-   playermap:draw()
-end
-
-function battleState.onMouseClick (mx, my, button)
-   for key, tool in ipairs(maptools) do
-      if tool.active then
-         playermap:setCurrentCursor(key)
-         enemymap:setCurrentCursor(key)
-      end
-   end
-
-   playermap:onMouseClick(mx, my, button)
-   enemymap:onMouseClick(mx, my, button)
-end
-
+placeShipState.confbutton.action = function () print("confirm"); placeShipState.reset(); battleState.setUp() end
 --------------------External--------------------
+
 GAMESTATES = {
    PLACESHIPS = 1,
    BATTLE = 2,

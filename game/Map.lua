@@ -134,6 +134,11 @@ function Map:draw (shipcursor_facing)
    end
 end
 
+function Map:isInputInsideRegion (mx, my)
+   return (mx > self.region.x and mx < self.region.x + self.region.size) and
+   (my > self.region.y and my < self.region.y + self.region.size)
+end
+
 function Map:setCurrentCursor (key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
