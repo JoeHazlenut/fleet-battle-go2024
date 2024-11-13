@@ -150,7 +150,6 @@ function Map:getCursorKey ()
 end
 
 function Map:setCursorToShip (key)
-   print(key)
    self.cursorkey = key
    self.currentcursor = Map.shipquads[key]
    self.cursorimg = Map.shipimage

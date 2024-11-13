@@ -62,6 +62,11 @@ function battleState.draw ()
 
    enemymap:draw()
    playermap:draw()
+
+   if DEVHELP and DEVHELP.gridmode then
+      print("dev active")
+      DEVHELP.showShips(playermap, enemymap)
+   end
 end
 
 function battleState.onMouseClick (mx, my, button)
@@ -89,6 +94,9 @@ placeShipState.buttons["B"] = Button:new(images.shipbuttonimg, LOVE.graphics.new
 placeShipState.buttons["C"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 9 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("C") return "C", SHIPFACING.left end)
 placeShipState.buttons["D"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 11 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("D") return "D", SHIPFACING.left end)
 placeShipState.buttons["E"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 13 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end)
+
+function placeShipState.setUp ()
+end
 
 function placeShipState.update (dt)
    local mx, my = LOVE.mouse.getPosition()
@@ -192,7 +200,6 @@ function placeShipState.reset ()
    placeShipState.selship.ships_to_place = 5
 end
 
-placeShipState.confbutton.action = function () print("confirm"); placeShipState.reset(); battleState.setUp() end
 --------------------External--------------------
 
 GAMESTATES = {
@@ -205,6 +212,12 @@ GAMESTATES = {
 local playscreen = {
    state = placeShipState
 }
+
+function playscreen.setState (new_state)
+   playscreen.state.reset()
+   playscreen.state = new_state
+   playscreen.state.setUp()
+end
 
 function playscreen.reset ()
    playscreen.state = placeShipState
@@ -221,5 +234,8 @@ end
 function playscreen.onMouseClick(mx, my, button)
    playscreen.state.onMouseClick(mx, my, button)
 end
+
+---------------------------------------Button Actions--------------------------------
+placeShipState.confbutton.action = function () print("confirm"); playscreen.setState(battleState) end
 
 return playscreen

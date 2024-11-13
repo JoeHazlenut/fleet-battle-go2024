@@ -12,7 +12,7 @@ local devhelp = {
 
 -----------------------EXTERNAL--------------------
 function devhelp.showGrid ()
-   LOVE.graphics.setColor(1, 1, 1, 1)
+   LOVE.graphics.setColor(1, 1, 1, 0.5)
 
    for col = 1, columns do
       LOVE.graphics.line(col * TILESIZE, 0, col * TILESIZE, 720)
@@ -42,6 +42,21 @@ function devhelp.showSystemMetrics ()
    LOVE.graphics.setColor(0, 0, 0, 1)
    LOVE.graphics.print("FPS: " .. LOVE.timer.getFPS(), 10, 640)
    LOVE.graphics.print("MEM: " .. collectgarbage("count"), 10, 680)
+end
+
+function devhelp.showShips (playermap, enemymap)
+   for rindx = 1, 15 do
+      for cindx = 1, 15 do
+         if playermap.shiplayer[rindx][cindx] ~= 0 then
+            LOVE.graphics.setColor(1, 1, 0, 0.2)
+            LOVE.graphics.rectangle("fill", (cindx - 1) * TILESIZE + playermap.region.x, (rindx - 1) * TILESIZE + playermap.region.y, TILESIZE, TILESIZE)
+         end
+         if enemymap.shiplayer[rindx][cindx] ~= 0 then
+            LOVE.graphics.setColor(1, 0, 0, 0.2)
+            LOVE.graphics.rectangle("fill", (cindx - 1) * TILESIZE + enemymap.region.x, (rindx - 1) * TILESIZE + enemymap.region.y, TILESIZE, TILESIZE)
+         end
+      end
+   end
 end
 
 return devhelp

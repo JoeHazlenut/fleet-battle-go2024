@@ -11,28 +11,20 @@ local function allTilesFree(r, c, facing, numtiles)
    for step = 1, numtiles - 1 do
       if facing == SHIPFACING.right or facing == SHIPFACING.left then
          if facing == SHIPFACING.right then
-            print("right")
-            print("Checking: " .. r .. "/" .. c - step)
             if enemymap.shiplayer[r][c - step] ~= 0 then
                return false
             end
          else
-            print("left")
-            print("Checking: " .. r .. "/" .. c + step)
             if enemymap.shiplayer[r][c + step] ~= 0 then
                return false
             end
          end
       else
          if facing == SHIPFACING.up then
-            print("up: " .. tostring(facing))
-            print("Checking: " .. r + step .. "/" .. c)
             if enemymap.shiplayer[r + step][c] ~= 0 then
                return false
             end
          else
-            print("down: " .. tostring(facing))
-            print("Checking: " .. r - step .. "/" .. c)
             if enemymap.shiplayer[r - step][c] ~= 0 then
                return false
             end
@@ -40,7 +32,6 @@ local function allTilesFree(r, c, facing, numtiles)
       end
    end
 
-   --print("All tiles free")
    return true
 end
 
@@ -67,7 +58,6 @@ function enemymap:generateEnemyBoard ()
       local shiptype = shiptypes[typekey]
       local numshiptiles = 0
       
-     -- print("Placing: " .. shiptype)
 
       if shiptype == "A" then -- 2 tile ship
          numshiptiles = 2
@@ -84,7 +74,6 @@ function enemymap:generateEnemyBoard ()
       local randcol = math.random(1, boardmax)
 
       while (allInsideMap(randrow, randcol, randfacing, numshiptiles) == false) or (allTilesFree(randrow, randcol, randfacing, numshiptiles) == false) do
-         --print("reroll the tiles")
          randrow = math.random(1, boardmax)
          randcol = math.random(1, boardmax)
       end
