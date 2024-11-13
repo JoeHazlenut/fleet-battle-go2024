@@ -12,53 +12,48 @@ local function allTilesFree(r, c, facing, numtiles)
       if facing == SHIPFACING.right or facing == SHIPFACING.left then
          if facing == SHIPFACING.right then
             print("right")
+            print("Checking: " .. r .. "/" .. c - step)
             if enemymap.shiplayer[r][c - step] ~= 0 then
-               print("Checking: " .. r .. "/" .. c - step)
                return false
             end
          else
             print("left")
+            print("Checking: " .. r .. "/" .. c + step)
             if enemymap.shiplayer[r][c + step] ~= 0 then
-               print("Checking: " .. r .. "/" .. c + step)
                return false
             end
          end
       else
          if facing == SHIPFACING.up then
             print("up: " .. tostring(facing))
+            print("Checking: " .. r + step .. "/" .. c)
             if enemymap.shiplayer[r + step][c] ~= 0 then
-               print("Checking: " .. r + step .. "/" .. c)
                return false
             end
          else
             print("down: " .. tostring(facing))
+            print("Checking: " .. r - step .. "/" .. c)
             if enemymap.shiplayer[r - step][c] ~= 0 then
-               print("Checking: " .. r - step .. "/" .. c)
                return false
             end
          end
       end
    end
 
-   print("All tiles free")
+   --print("All tiles free")
    return true
 end
 
 local function allInsideMap (r, c, facing, numtiles)
-   local allgood = false
    if facing == SHIPFACING.up then
-      allgood = (r - numtiles >= 1) and (r <= 15) and (c >= 1) and (c <= 15)
+      return ((r + numtiles) < 16) and (r > 0) and (c > 0) and (c < 16)
    elseif facing == SHIPFACING.right then
-      allgood = (c - numtiles >= 1) and (c <= 15) and (r <= 15) and (r >= 1)
+      return ((c - numtiles) > 0) and (c < 16) and (r < 16) and (r > 0)
    elseif facing == SHIPFACING.down then
-      allgood = (c + numtiles <= 15) and (c >= 1) and (r <= 15) and (r >= 1)
-   else
-      allgood = (r + numtiles <= 15) and (r >= 1) and (c <= 15) and (c >= 1)
+      return ((r - numtiles) > 0) and (r < 16) and (c < 16) and (c > 0)
+   else -- left
+      return ((c + numtiles) < 16) and (c > 0) and (r < 16) and (r > 0)
    end
-
-   print("All Inside with: facing - " .. facing .. " and tiles " .. numtiles  .. " " .. tostring(allgood))
-
-   return allgood
 end
 
 function enemymap:generateEnemyBoard ()
@@ -72,7 +67,7 @@ function enemymap:generateEnemyBoard ()
       local shiptype = shiptypes[typekey]
       local numshiptiles = 0
       
-      print("Placing: " .. shiptype)
+     -- print("Placing: " .. shiptype)
 
       if shiptype == "A" then -- 2 tile ship
          numshiptiles = 2
@@ -89,7 +84,7 @@ function enemymap:generateEnemyBoard ()
       local randcol = math.random(1, boardmax)
 
       while (allInsideMap(randrow, randcol, randfacing, numshiptiles) == false) or (allTilesFree(randrow, randcol, randfacing, numshiptiles) == false) do
-         print("reroll the tiles")
+         --print("reroll the tiles")
          randrow = math.random(1, boardmax)
          randcol = math.random(1, boardmax)
       end
