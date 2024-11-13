@@ -40,10 +40,8 @@ local battleState = {
       move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move"),
       turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn"),
    },
+   active_button = nil
 }
-for _, button in ipairs(battleState.buttons) do
-   button:draw()
-end
 
 
 function battleState.setUp ()
@@ -104,9 +102,11 @@ function battleState.onMouseClick (mx, my, button)
          if button.action then
             button.action()
          end
+         battleState.active_button = button
       elseif button.active and not button.hot then
          button.active = false
          button.hot = false
+         enemymap:setCurrentCursor(MAPTOOLS.selector)
       end
    end
 
