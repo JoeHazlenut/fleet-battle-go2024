@@ -16,7 +16,8 @@ MAPTOOLS = {
    left = 6,
    ring = 7,
    aim = 8,
-   selector = 9
+   selector = 9,
+   shooter = 10
 }
 
 
@@ -31,7 +32,8 @@ local Map = {
       LOVE.graphics.newQuad(2 * TILESIZE, 5 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  --left
       LOVE.graphics.newQuad(2 * TILESIZE, 6 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- circle
       LOVE.graphics.newQuad(2 * TILESIZE, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- aim
-      LOVE.graphics.newQuad(2 * TILESIZE, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240)   -- selector
+      LOVE.graphics.newQuad(2 * TILESIZE, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- selector
+      LOVE.graphics.newQuad(2 * TILESIZE, 9 * TILESIZE, TILESIZE, TILESIZE, 72, 240)   -- shoot
    },
    shipquads = {}
 }
@@ -140,6 +142,7 @@ function Map:isInputInsideRegion (mx, my)
 end
 
 function Map:setCurrentCursor (key)
+   print(key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage

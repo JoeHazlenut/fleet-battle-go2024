@@ -35,7 +35,7 @@ local Button = require "engine/Button"
 ----------------------BATTLE--------------------
 local battleState = {
    buttons = {
-      attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() print("Attack") end, "Attack"),
+      attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter) end, "Attack"),
       decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decipher") end, "Decipher"),
       move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move"),
       turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn"),
