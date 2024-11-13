@@ -6,6 +6,7 @@ local images = {
    shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
    selectimage = LOVE.graphics.newImage("assets/new/place_ship_ui.png"),
    shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
+   battlebuttonimg = LOVE.graphics.newImage("assets/new/battle_orders_buttons.png"),
    msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
 
@@ -33,7 +34,17 @@ local Button = require "engine/Button"
 
 ----------------------BATTLE--------------------
 local battleState = {
+   buttons = {
+      attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() print("Attack") end, "Attack"),
+      decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decipher") end, "Decipher"),
+      move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move"),
+      turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn"),
+   },
 }
+for _, button in ipairs(battleState.buttons) do
+   button:draw()
+end
+
 
 function battleState.setUp ()
    enemymap:generateEnemyBoard ()
@@ -45,8 +56,13 @@ function battleState.update (dt)
       mx = mx * INPUTCORRECTION
       my = my * INPUTCORRECTION
    end
+
    for _, tool in ipairs(maptools) do
       tool:update(mx, my)
+   end
+
+   for _, b in pairs(battleState.buttons) do
+      b:isMouseInside(mx, my)
    end
 
    enemymap:update(dt)
@@ -63,10 +79,14 @@ function battleState.draw ()
    enemymap:draw()
    playermap:draw()
 
+   for _, button in pairs(battleState.buttons) do
+      button:draw()
+   end
+
    if DEVHELP and DEVHELP.gridmode then
-      print("dev active")
       DEVHELP.showShips(playermap, enemymap)
    end
+
 end
 
 function battleState.onMouseClick (mx, my, button)
@@ -74,6 +94,19 @@ function battleState.onMouseClick (mx, my, button)
       if tool.active then
          playermap:setCurrentCursor(key)
          enemymap:setCurrentCursor(key)
+      end
+   end
+
+   for _, button in pairs(battleState.buttons) do
+      if button.hot and not button.active then
+         button.active = true
+         button.hot = false
+         if button.action then
+            button.action()
+         end
+      elseif button.active and not button.hot then
+         button.active = false
+         button.hot = false
       end
    end
 
@@ -87,7 +120,7 @@ local placeShipState = {
    font = LOVE.graphics.newFont("assets/pixelfont.ttf", 16),
    selship = {},
    ships_to_place = 5,
-   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm not defined") end, "CONFIRM")
+   confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm not defined") end, "CONFIRM", {0.44, 0.8, 0.44, 1})
 }
 placeShipState.buttons["A"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 0, 2 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 5 * TILESIZE, 2 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("A") return "A", SHIPFACING.left end)
 placeShipState.buttons["B"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, TILESIZE, 3 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 7 * TILESIZE, 3 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("B") return "B", SHIPFACING.left end)
