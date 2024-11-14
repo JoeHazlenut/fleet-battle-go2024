@@ -1,5 +1,5 @@
 ---@diagnostic disable: assign-type-mismatch
-local Map = require "game/Map"
+local Map = require "game.Map"
 
 local enemymap = Map:new (Map.types.enemy)
 

@@ -17,7 +17,12 @@ MAPTOOLS = {
    ring = 7,
    aim = 8,
    selector = 9,
-   shooter = 10
+   shooter = 10,
+   miss = 11,
+   hit = 12,
+   turn = 13,
+   move = 14,
+   decipher = 15
 }
 
 
@@ -33,7 +38,9 @@ local Map = {
       LOVE.graphics.newQuad(2 * TILESIZE, 6 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- circle
       LOVE.graphics.newQuad(2 * TILESIZE, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- aim
       LOVE.graphics.newQuad(2 * TILESIZE, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- selector
-      LOVE.graphics.newQuad(2 * TILESIZE, 9 * TILESIZE, TILESIZE, TILESIZE, 72, 240)   -- shoot
+      LOVE.graphics.newQuad(2 * TILESIZE, 9 * TILESIZE, TILESIZE, TILESIZE, 72, 240),  -- shoot
+      LOVE.graphics.newQuad(0, 9 * TILESIZE, TILESIZE, TILESIZE, 72, 240),             -- miss
+      LOVE.graphics.newQuad(TILESIZE, 9 * TILESIZE, TILESIZE, TILESIZE, 72, 240),      -- hit
    },
    shipquads = {}
 }
@@ -119,7 +126,6 @@ function Map:draw (shipcursor_facing)
       my = my * INPUTCORRECTION
    end
 
-
    for rownumber, row in ipairs(self.shiplayer) do
       for tilenumber, col in ipairs(row) do
          if self.infolayer[rownumber][tilenumber] ~= 0 then
@@ -142,7 +148,6 @@ function Map:isInputInsideRegion (mx, my)
 end
 
 function Map:setCurrentCursor (key)
-   print(key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage

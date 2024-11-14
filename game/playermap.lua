@@ -1,4 +1,4 @@
-local Map = require "game/Map"
+local Map = require "game.Map"
 
 local playermap = Map:new(Map.types.player)
 
@@ -39,6 +39,7 @@ function playermap:draw ()
 
             LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
          end
+
          if self.infolayer[rownumber][tilenumber] ~= 0 then
             LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE)
          end

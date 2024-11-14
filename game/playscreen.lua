@@ -10,11 +10,11 @@ local images = {
    msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
 
-local Map = require "game/Map".init(images.toolimage, images.shipimage)
-local playermap = require "game/playermap"
-local enemymap = require "game/enemymap"
+local Map = require "game.Map".init(images.toolimage, images.shipimage)
+local playermap = require "game.playermap"
+local enemymap = require "game.enemymap"
 
-local Maptool = require "game/Maptool"
+local Maptool = require "game.Maptool"
 
 SHIPFACING = {up = 1, right = 2, down = 3, left = 4}
 
@@ -30,7 +30,7 @@ local maptools = {
    Maptool:new(LOVE.graphics.newQuad(0, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240), LOVE.graphics.newQuad(TILESIZE, 7 * TILESIZE, TILESIZE, TILESIZE, 72, 240), images.toolimage, 20 * TILESIZE, 5 * TILESIZE),
 }
 
-local Button = require "engine/Button"
+local Button = require "engine.Button"
 
 ----------------------BATTLE--------------------
 local battleState = {
@@ -40,12 +40,17 @@ local battleState = {
       move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move"),
       turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn"),
    },
-   active_button = nil
+   active_button = nil,
+   player = require "game.player":init(playermap, enemymap),
+   enemy = require "game.enemy":init(enemymap, playermap),
 }
 
+battleState.active_commander = battleState.player
 
 function battleState.setUp ()
    enemymap:generateEnemyBoard ()
+
+   battleState.active_commander = battleState.player
 end
 
 function battleState.update (dt)
@@ -112,6 +117,8 @@ function battleState.onMouseClick (mx, my, button)
 
    playermap:onMouseClick(mx, my, button)
    enemymap:onMouseClick(mx, my, button)
+
+   battleState.active_commander:onClick(mx, my)
 end
 
 -------------------PLACESHIPS-------------------
