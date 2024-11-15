@@ -7,6 +7,7 @@ local images = {
    selectimage = LOVE.graphics.newImage("assets/new/place_ship_ui.png"),
    shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
    battlebuttonimg = LOVE.graphics.newImage("assets/new/battle_orders_buttons.png"),
+   apimg = LOVE.graphics.newImage("assets/new/ap.png"),
    msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
 
@@ -86,10 +87,13 @@ function battleState.draw ()
       button:draw()
    end
 
+   if battleState.active_commander.draw then
+      battleState.active_commander:draw(images.apimg)
+   end
+
    if DEVHELP and DEVHELP.gridmode then
       DEVHELP.showShips(playermap, enemymap)
    end
-
 end
 
 function battleState.onMouseClick (mx, my, button)
