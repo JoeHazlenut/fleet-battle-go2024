@@ -111,13 +111,16 @@ function battleState.onMouseClick (mx, my, button)
       elseif button.active and not button.hot then
          button.active = false
          button.hot = false
-         enemymap:setCurrentCursor(MAPTOOLS.selector)
+         if not battleState.active_button then
+            enemymap:setCurrentCursor(MAPTOOLS.selector)
+         end
       end
    end
 
    playermap:onMouseClick(mx, my, button)
    enemymap:onMouseClick(mx, my, button)
 
+   print(playermap:getCursorKey())
    battleState.active_commander:onClick(mx, my)
 end
 

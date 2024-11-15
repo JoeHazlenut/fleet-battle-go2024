@@ -144,10 +144,12 @@ end
 
 function Map:isInputInsideRegion (mx, my)
    return (mx > self.region.x and mx < self.region.x + self.region.size) and
-   (my > self.region.y and my < self.region.y + self.region.size)
+         (my > self.region.y and my < self.region.y + self.region.size)
 end
 
 function Map:setCurrentCursor (key)
+   print("settign cursor")
+   print(key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage
@@ -178,7 +180,7 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
                break
             end
          end
-         if maptool_indx < 9 then
+         if maptool_indx ~= 9 then
             self.infolayer[tile_x][tile_y] = maptool_indx
          end
       end
@@ -328,6 +330,7 @@ function Map:pickUpPlacedShip(row, col)
 end
 
 function Map:printSL()
+   print("Shiplayer: ")
    for i, row in ipairs(self.shiplayer) do
       local rowstring = ""
       for j, val in ipairs(row) do
@@ -335,6 +338,19 @@ function Map:printSL()
       end
       print(rowstring)
    end
+   print("-------------------------------------------------------")
+end
+
+function Map:printIL()
+   print("Infolayer: ")
+   for i, row in ipairs(self.infolayer) do
+      local rowstring = ""
+      for j, val in ipairs(row) do
+         rowstring = rowstring .. tostring(val) .. "|"
+      end
+      print(rowstring)
+   end
+   print("-------------------------------------------------------")
 end
 
 return Map
