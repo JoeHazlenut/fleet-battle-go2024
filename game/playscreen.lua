@@ -38,7 +38,7 @@ local battleState = {
    buttons = {},
    active_button = nil,
    player = require "game.player":init(playermap, enemymap),
-   enemy = require "game.enemy":init(enemymap, playermap),
+   enemy = require "game.enemy":init(enemymap, playermap)
 }
 battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
 battleState.buttons.decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decipher") end, "Decipher")
@@ -102,6 +102,8 @@ function battleState.onMouseClick (mx, my, button)
       end
    end
 
+   battleState.active_commander:onClick(mx, my)
+
    for _, b in pairs(battleState.buttons) do
       if b.hot and not b.active then
          b.active = true
@@ -113,17 +115,16 @@ function battleState.onMouseClick (mx, my, button)
       elseif b.active and not b.hot then
          b.active = false
          b.hot = false
-         if not battleState.active_button then
-            enemymap:setCurrentCursor(MAPTOOLS.selector)
+         playermap:setCurrentCursor(MAPTOOLS.selector)
+         enemymap:setCurrentCursor(MAPTOOLS.selector)
+         if battleState.active_commander.pending_action then
+            battleState.active_commander:resetPreviews()
          end
       end
    end
 
    playermap:onMouseClick(mx, my, button)
    enemymap:onMouseClick(mx, my, button)
-
-   --print(playermap:getCursorKey())
-   battleState.active_commander:onClick(mx, my)
 end
 
 -------------------PLACESHIPS-------------------

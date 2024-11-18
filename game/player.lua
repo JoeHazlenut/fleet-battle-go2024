@@ -50,6 +50,43 @@ function player:highlightApCosts (pa_code)
       end
       indx = indx - 1
    end
+   self.pending_action = true
+end
+
+function player:resetPreviews ()
+   for indx, ap in ipairs(self.show_ap) do
+      if ap.preview == true and not ap.used then
+         ap.preview = false
+      end
+   end
+
+   self.pending_action = false
+end
+
+function player:onClick(mx, my)
+   local r = 0
+   local c = 0
+   local selected_map = nil
+
+   if self.om:isInputInsideRegion(mx, my) then
+      r = math.floor(((my - self.om.region.y) / TILESIZE) + 1)
+      c = math.floor(((mx - self.om.region.x) / TILESIZE) + 1)
+      selected_map = self.om
+   elseif self.em:isInputInsideRegion(mx, my) then
+      r = math.floor(((my - self.em.region.y) / TILESIZE) + 1)
+      c = math.floor(((mx - self.em.region.x) / TILESIZE) + 1)
+      selected_map = self.em
+   else
+      return -- Input not inside a map, and so we just do nothing
+   end
+
+   local actioncode = selected_map:getCursorKey()
+
+   if actioncode == MAPTOOLS.shooter then
+      self.show_ap[self.ap].used = true -- this is the difference to the metatables method
+      self:attack(r, c)
+      selected_map:setCurrentCursor(MAPTOOLS.selector)
+   end
 end
 
 return player
