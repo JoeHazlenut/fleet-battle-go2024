@@ -41,7 +41,7 @@ function playermap:draw ()
          end
 
          if self.infolayer[rownumber][tilenumber] ~= 0 then
-            LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 2) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE)
+            LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE)
          end
       end
    end

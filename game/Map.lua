@@ -180,6 +180,7 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
          end
          if maptool_indx ~= 9 then
             self.infolayer[tile_x][tile_y] = maptool_indx
+            self:setCurrentCursor(MAPTOOLS.selector)
          end
       end
     end
@@ -208,7 +209,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
             local y = ytile
             for step = 1, shipsize do
                y = y + 1
-               if y < 16 then
+               if y < 16 and self.shiplayer[y][xtile] == 0 then
                   table.insert(tiles, y)
                else
                   return false
@@ -222,7 +223,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
             local x = xtile
             for step = 1, shipsize do
                x = x - 1
-               if x > 0 then
+               if x > 0 and self.shiplayer[ytile][x] == 0 then
                   table.insert(tiles, x)
                else
                   return false
@@ -236,7 +237,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
             local y = ytile
             for step = 1, shipsize do
                y = y - 1
-               if y > 0 then
+               if y > 0 and self.shiplayer[y][xtile] == 0 then
                   table.insert(tiles, y)
                else
                   return false
@@ -250,7 +251,7 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
             local x = xtile
             for step = 1, shipsize do
                x = x + 1
-               if x < 16 then
+               if x < 16 and self.shiplayer[ytile][x] == 0 then
                   table.insert(tiles, x)
                else
                   return false
@@ -277,54 +278,126 @@ end
 
 function Map:pickUpPlacedShip(row, col)
    local shiptype = self.shiplayer[row][col]
-   local facing = SHIPFACING.left
+   local bigtype = string.upper(shiptype)
+
+   local facing = 0
+
+   if shiptype == bigtype then
+      local step = 1
+      if row + step < 16 then
+         if self.shiplayer[row + step][col] == string.lower(shiptype) then
+            facing = SHIPFACING.up
+            while row + step < 16 do
+               if self.shiplayer[row + step][col] == string.lower(shiptype) then
+                  self.shiplayer[row + step][col] = 0
+                  step = step + 1
+               else
+                  break
+               end
+            end
+         end
+
+         step = 1
+         if self.shiplayer[row][col + step] == string.lower(shiptype) then
+            facing = SHIPFACING.left
+            while col + step < 16 do
+               if self.shiplayer[row][col + step] == string.lower(shiptype) then
+                  self.shiplayer[row][col + step] = 0
+                  step = step + 1
+               else
+                  break
+               end
+            end
+         end
+
+         step = 1
+         if self.shiplayer[row - 1][col] == string.lower(shiptype) then
+            facing = SHIPFACING.down
+            while row - step > 0 do
+               if self.shiplayer[row - step][col] == string.lower(shiptype) then
+                  self.shiplayer[row - step][col] = 0
+                  step = step + 1
+               else
+                  break
+               end
+            end
+         end
+      end
+
+      step = 1
+      if self.shiplayer[row][col - 1] == string.lower(shiptype) then
+         facing = SHIPFACING.right
+         while col - step > 0 do
+            if self.shiplayer[row][col - step] == string.lower(shiptype) then
+               self.shiplayer[row][col - step] = 0
+               step = step + 1
+            else
+               break
+            end
+         end
+      end
+
+   else
+      local step = 1
+      while row + step < 16 do
+         if self.shiplayer[row + step][col] == bigtype then
+            facing = SHIPFACING.down
+            self.shiplayer[row + step][col] = 0
+            break
+         elseif self.shiplayer[row + step][col] == shiptype then
+            self.shiplayer[row + step][col] = 0
+            step = step + 1
+         else
+            break
+         end
+      end
+
+      step = 1
+      while col + step < 16 do
+         if self.shiplayer[row][col + step] == bigtype then
+            facing = SHIPFACING.right
+            self.shiplayer[row][col + step] = 0
+            break
+         elseif self.shiplayer[row][col + step] == shiptype then
+            self.shiplayer[row][col + step] = 0
+            step = step + 1
+         else
+            break
+         end
+      end
+
+      step = 1
+      while row - step > 0 do
+         if self.shiplayer[row - step][col] == bigtype then
+            facing = SHIPFACING.up
+            self.shiplayer[row - step][col] = 0
+            break
+         elseif self.shiplayer[row - step][col] == shiptype then
+            self.shiplayer[row - step][col] = 0
+            step = step + 1
+         else
+            break
+         end
+      end
+
+      step = 1
+      while col - step > 0 do
+         if self.shiplayer[row][col - step] == bigtype then
+            facing = SHIPFACING.left
+            self.shiplayer[row][col - step] = 0
+            break
+         elseif self.shiplayer[row][col - step] == shiptype then
+            self.shiplayer[row][col - step] = 0
+            step = step + 1
+         else
+            break
+         end
+      end
+   end
+
    self.shiplayer[row][col] = 0
 
-   local up = row - 1
-   while up > 0 do
-      if self.shiplayer[up][col] == string.upper(shiptype) or self.shiplayer[up][col] == string.lower(shiptype) then
-         self.shiplayer[up][col] = 0
-         up = up - 1
-         facing = SHIPFACING.up
-      else
-         break
-      end
-   end
-
-   local right = col + 1
-   while right < 16 do
-      if self.shiplayer[row][right] == string.upper(shiptype)  or self.shiplayer[row][right] == string.lower(shiptype) then
-         self.shiplayer[row][right] = 0
-         right = right + 1
-         facing = SHIPFACING.right
-      else
-         break
-      end
-   end
-
-   local down = row + 1
-   while down < 16 do
-      if self.shiplayer[down][col] == string.upper(shiptype) or self.shiplayer[down][col] == string.lower(shiptype) then
-         self.shiplayer[down][col] = 0
-         down = down + 1
-         facing = SHIPFACING.down
-      else
-         break
-      end
-   end
-
-   local left = col - 1
-   while left > 0 do
-      if self.shiplayer[row][left] == string.upper(shiptype) or self.shiplayer[row][left] == string.lower(shiptype) then
-         self.shiplayer[row][left] = 0
-         left = left - 1
-         facing = SHIPFACING.left
-      else
-         break
-      end
-   end
-
-   return string.upper(shiptype), facing
+   return bigtype, facing
 end
 
 function Map:printSL()
