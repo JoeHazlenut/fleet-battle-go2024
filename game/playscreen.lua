@@ -130,7 +130,7 @@ end
 local placeShipState = {
    buttons = {},
    font = LOVE.graphics.newFont("assets/pixelfont.ttf", 16),
-   selship = {},
+   selship = {letter = ""},
    ships_to_place = 5,
    confbutton = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(4 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(8 * TILESIZE, 5 * TILESIZE, 4 * TILESIZE, TILESIZE, 360, 144), 24 * TILESIZE, 15 * TILESIZE, 4 * TILESIZE, TILESIZE, function () print("confirm not defined") end, "CONFIRM", {0.44, 0.8, 0.44, 1})
 }
