@@ -169,7 +169,15 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
       local tile_x = math.floor((my - self.region.y) / TILESIZE) + 1
       local tile_y = math.floor((mx - self.region.x) / TILESIZE) + 1
 
+
       local selection = self.infolayer[tile_x][tile_y]
+
+      if selection ~= 0 then
+         self:setCurrentCursor(selection)
+         self.infolayer[tile_x][tile_y] = 0
+         return
+      end
+
       local maptool_indx = 0
       if selection ~= self.currentcursor then
          for indx, quad in ipairs(Map.toolquads) do
