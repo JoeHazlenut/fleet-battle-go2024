@@ -57,7 +57,6 @@ function enemymap:generateEnemyBoard ()
    for typekey = 1, numships do
       local shiptype = shiptypes[typekey]
       local numshiptiles = 0
-      
 
       if shiptype == "A" then -- 2 tile ship
          numshiptiles = 2

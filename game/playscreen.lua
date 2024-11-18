@@ -35,17 +35,15 @@ local Button = require "engine.Button"
 
 ----------------------BATTLE--------------------
 local battleState = {
-   buttons = {
-      attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter) end, "Attack"),
-      decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decipher") end, "Decipher"),
-      move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move"),
-      turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn"),
-   },
+   buttons = {},
    active_button = nil,
    player = require "game.player":init(playermap, enemymap),
    enemy = require "game.enemy":init(enemymap, playermap),
 }
-
+battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
+battleState.buttons.decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decipher") end, "Decipher")
+battleState.buttons.move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() print("Move") end, "Move")
+battleState.turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() print("Turn") end, "Turn")
 battleState.active_commander = battleState.player
 
 function battleState.setUp ()
@@ -104,17 +102,17 @@ function battleState.onMouseClick (mx, my, button)
       end
    end
 
-   for _, button in pairs(battleState.buttons) do
-      if button.hot and not button.active then
-         button.active = true
-         button.hot = false
-         if button.action then
-            button.action()
+   for _, b in pairs(battleState.buttons) do
+      if b.hot and not b.active then
+         b.active = true
+         b.hot = false
+         if b.action then
+            b.action()
          end
-         battleState.active_button = button
-      elseif button.active and not button.hot then
-         button.active = false
-         button.hot = false
+         battleState.active_button = b
+      elseif b.active and not b.hot then
+         b.active = false
+         b.hot = false
          if not battleState.active_button then
             enemymap:setCurrentCursor(MAPTOOLS.selector)
          end
@@ -124,7 +122,7 @@ function battleState.onMouseClick (mx, my, button)
    playermap:onMouseClick(mx, my, button)
    enemymap:onMouseClick(mx, my, button)
 
-   print(playermap:getCursorKey())
+   --print(playermap:getCursorKey())
    battleState.active_commander:onClick(mx, my)
 end
 

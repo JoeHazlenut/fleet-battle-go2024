@@ -148,8 +148,6 @@ function Map:isInputInsideRegion (mx, my)
 end
 
 function Map:setCurrentCursor (key)
-   print("settign cursor")
-   print(key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage
