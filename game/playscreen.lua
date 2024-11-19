@@ -123,8 +123,8 @@ function battleState.onMouseClick (mx, my, button)
       end
    end
 
-   playermap:onMouseClick(mx, my, button)
-   enemymap:onMouseClick(mx, my, button)
+   playermap:onMouseClick(mx, my, button, enemymap)
+   enemymap:onMouseClick(mx, my, button, playermap)
 end
 
 -------------------PLACESHIPS-------------------

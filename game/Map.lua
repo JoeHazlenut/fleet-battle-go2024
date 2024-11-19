@@ -163,7 +163,7 @@ function Map:setCursorToShip (key)
    self.cursorimg = Map.shipimage
 end
 
-function Map:onMouseClick(mx, my, button)
+function Map:onMouseClick(mx, my, button, other)
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((my - self.region.y) / TILESIZE) + 1
@@ -188,6 +188,7 @@ function Map:onMouseClick(mx, my, button)
          if maptool_indx ~= 9 then
             self.infolayer[tile_x][tile_y] = maptool_indx
             self:setCurrentCursor(MAPTOOLS.selector)
+            other:setCurrentCursor(MAPTOOLS.selector)
          end
       end
    end
