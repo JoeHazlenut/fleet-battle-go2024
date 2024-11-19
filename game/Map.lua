@@ -163,7 +163,7 @@ function Map:setCursorToShip (key)
    self.cursorimg = Map.shipimage
 end
 
-function Map:onMouseClick(mx, my, button) --TODO: WTF????
+function Map:onMouseClick(mx, my, button)
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
       local tile_x = math.floor((my - self.region.y) / TILESIZE) + 1
@@ -172,8 +172,7 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
 
       local selection = self.infolayer[tile_x][tile_y]
 
-      if selection ~= 0 then
-         self:setCurrentCursor(selection)
+      if button == 2 and selection < MAPTOOLS.hit then
          self.infolayer[tile_x][tile_y] = 0
          return
       end
@@ -191,7 +190,7 @@ function Map:onMouseClick(mx, my, button) --TODO: WTF????
             self:setCurrentCursor(MAPTOOLS.selector)
          end
       end
-    end
+   end
 end
 
 function Map:onLeftClickPlaceShip (mx, my, type, facing)
