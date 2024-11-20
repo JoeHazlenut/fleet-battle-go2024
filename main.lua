@@ -37,6 +37,7 @@ end
 
 ---------------------------DRAW---------------------------
 function LOVE.draw ()
+   LOVE.graphics.clear(0, 0, 0, 1)
    LOVE.graphics.push()
    LOVE.graphics.translate(translationfactor.x, translationfactor.y)
    LOVE.graphics.scale(SCALEFACTOR, SCALEFACTOR)

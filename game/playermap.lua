@@ -5,6 +5,11 @@ local activeshiptype = ""
 
 local playermap = Map:new(Map.types.player)
 
+local stepspossible = 0
+local moveoption_draw_start_r = 0
+local moveoption_draw_start_c = 0
+local facing = 0
+
 local shiptypes_str = "ABCDE"
 
 function playermap:draw ()
@@ -52,6 +57,29 @@ function playermap:draw ()
             LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE)
          end
       end
+
+      if activeshiptype ~= "" then
+         LOVE.graphics.setColor(1, 1, 0, 0.015)
+         if facing == SHIPFACING.up then
+            for cntr = 1, stepspossible do
+               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - cntr) * TILESIZE), TILESIZE, TILESIZE)
+            end
+         elseif facing == SHIPFACING.right then
+            for cntr = 1, stepspossible do
+               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+            end
+         elseif facing == SHIPFACING.down then
+            for cntr = 1, stepspossible do
+               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + cntr) * TILESIZE), TILESIZE, TILESIZE)
+            end
+         elseif facing == SHIPFACING.left then
+            for cntr = 1, stepspossible do
+               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+            end
+         end
+      end
+
+      LOVE.graphics.setColor(1, 1, 1, 1)
    end
 
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
@@ -161,12 +189,24 @@ function playermap:onMouseClick(mx, my, button, other, player)
             local ship = string.upper(selection)
             if string.find(shiptypes_str, ship) then
                -- here we now that we have a ship
-               local drawstart_r = 0
-               local drawstart_c = 0
-               local facing = 0
-               drawstart_r, drawstart_c, facing = getShipFacing(row, col, selection, ship)
-               print("from: " .. tostring(drawstart_r) .. "/" .. tostring(drawstart_c) .. " into direction: " .. tostring(facing))
+
                activeshiptype = ship
+               moveoption_draw_start_r, moveoption_draw_start_c, facing = getShipFacing(row, col, selection, ship)
+
+               if ship == "A" then
+                  stepspossible = 4
+               elseif ship == "B" then
+                  stepspossible = 3
+               elseif ship == "C" then
+                  stepspossible = 4
+               elseif ship == "D" then
+                  stepspossible = 3
+               elseif ship == "E" then
+                  stepspossible = 2
+               else
+                  stepspossible = 0
+               end
+
             end
          end
       end
