@@ -172,9 +172,11 @@ function playermap:onMouseClick(mx, my, button, other, player)
       end
       if button == 2 then
          activeshiptype = ""
+         player:resetPreviews()
       end
    else
       activeshiptype = ""
+      player:resetPreviews()
    end
 
    Map.onMouseClick(self, mx, my, button, other)

@@ -272,7 +272,6 @@ function Map:onLeftClickPlaceShip (mx, my, type, facing)
          end
 
          self.shiplayer[ytile][xtile] = type
-         --self:printSL()
          return true
       end
    end
