@@ -62,19 +62,27 @@ function playermap:draw ()
          LOVE.graphics.setColor(1, 1, 0, 0.015)
          if facing == SHIPFACING.up then
             for cntr = 1, stepspossible do
-               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - cntr) * TILESIZE), TILESIZE, TILESIZE)
+               if moveoption_draw_start_r - cntr > 0 then
+                  LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - cntr) * TILESIZE), TILESIZE, TILESIZE)
+               end
             end
          elseif facing == SHIPFACING.right then
             for cntr = 1, stepspossible do
-               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+               if moveoption_draw_start_c + cntr < 16 then
+                  LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+               end
             end
          elseif facing == SHIPFACING.down then
             for cntr = 1, stepspossible do
-               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + cntr) * TILESIZE), TILESIZE, TILESIZE)
+               if moveoption_draw_start_r + cntr < 16 then
+                  LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + cntr) * TILESIZE), TILESIZE, TILESIZE)
+               end
             end
          elseif facing == SHIPFACING.left then
             for cntr = 1, stepspossible do
-               LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+               if moveoption_draw_start_c - cntr > 0 then
+                  LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
+               end
             end
          end
       end
