@@ -40,6 +40,7 @@ local battleState = {
    player = require "game.player":init(playermap, enemymap),
    enemy = require "game.enemy":init(enemymap, playermap)
 }
+
 battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
 battleState.buttons.decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 419, 84, 33, function() print("Decrypt") end, "Decipher")
 battleState.buttons.move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.move); battleState.player:highlightApCosts(PLAYER_ACTIONS.move) end, "Move")
@@ -97,14 +98,13 @@ end
 function battleState.onMouseClick (mx, my, button)
    for key, tool in ipairs(maptools) do
       if tool.active then
-         print("Here is a reset")
          playermap:setCurrentCursor(key)
          enemymap:setCurrentCursor(key)
       end
    end
 
    battleState.active_commander:onClick(mx, my)
-   playermap:onMouseClick(mx, my, button, enemymap)
+   playermap:onMouseClick(mx, my, button, enemymap, battleState.player)
    enemymap:onMouseClick(mx, my, button, playermap)
 
    for _, b in pairs(battleState.buttons) do
@@ -120,7 +120,7 @@ function battleState.onMouseClick (mx, my, button)
          b.hot = false
          playermap:setCurrentCursor(MAPTOOLS.selector)
          enemymap:setCurrentCursor(MAPTOOLS.selector)
-         if battleState.active_commander.pending_action then
+         if battleState.active_commander.pending_action and playermap:isShipSelected() == false then
             battleState.active_commander:resetPreviews()
          end
       end
@@ -248,7 +248,6 @@ function placeShipState.reset ()
 end
 
 --------------------External--------------------
-
 GAMESTATES = {
    PLACESHIPS = 1,
    BATTLE = 2,

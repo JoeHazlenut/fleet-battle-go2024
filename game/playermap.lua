@@ -1,5 +1,8 @@
 local Map = require "game.Map"
 
+local activeshipimg = LOVE.graphics.newImage("assets/new/ships_active.png")
+local activeshiptype = ""
+
 local playermap = Map:new(Map.types.player)
 
 local shiptypes_str = "ABCDE"
@@ -38,7 +41,11 @@ function playermap:draw ()
                error("FATAL: Ship does not seem to have any adjacend tiles, which should not happen!")
             end
 
-            LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
+            if activeshiptype == col then
+               LOVE.graphics.draw(activeshipimg, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
+            else
+               LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
+            end
          end
 
          if self.infolayer[rownumber][tilenumber] ~= 0 then
@@ -62,7 +69,6 @@ function playermap:drawPlaceShips (shipcursor_facing)
       my = my * INPUTCORRECTION
    end
 
-   local shiptypes_str = "ABCDE"
    local rotation = 0
    local roffsetx = 0
    local roffsety = 0
@@ -143,7 +149,7 @@ local function getShipFacing (r, c, val, shiptype)
    end
 end
 
-function playermap:onMouseClick(mx, my, button, other)
+function playermap:onMouseClick(mx, my, button, other, player)
    if (mx > self.region.x and mx < self.region.x + self.region.size) and
    (my > self.region.y and my < self.region.y + self.region.size) then
       local row = math.floor((my - self.region.y) / TILESIZE) + 1
@@ -160,12 +166,26 @@ function playermap:onMouseClick(mx, my, button, other)
                local facing = 0
                drawstart_r, drawstart_c, facing = getShipFacing(row, col, selection, ship)
                print("from: " .. tostring(drawstart_r) .. "/" .. tostring(drawstart_c) .. " into direction: " .. tostring(facing))
+               activeshiptype = ship
             end
          end
       end
+      if button == 2 then
+         activeshiptype = ""
+      end
+   else
+      activeshiptype = ""
    end
 
    Map.onMouseClick(self, mx, my, button, other)
+end
+
+function playermap:isShipSelected ()
+   if activeshiptype ~= "" then
+      return true
+   else
+      return false
+   end
 end
 
 return playermap

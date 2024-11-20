@@ -186,7 +186,7 @@ function Map:onMouseClick(mx, my, button, other)
                break
             end
          end
-         if maptool_indx ~= 9 then
+         if maptool_indx < 9 then
             self.infolayer[tile_x][tile_y] = maptool_indx
             self:setCurrentCursor(MAPTOOLS.selector)
             other:setCurrentCursor(MAPTOOLS.selector)
