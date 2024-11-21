@@ -179,9 +179,50 @@ local function getShipFacing (r, c, val, shiptype)
       elseif (c - 1 > 0) and (playermap.shiplayer[r][c - 1] == string.lower(val)) then
          return r, c, SHIPFACING.right
       end
-   else
-      print("Not yet implemented")
-      return 0, 0, 0
+   else -- val is a lower case letter, so we clicked the middle of the ship, we need to find the facing
+      local step = 1
+      while (r + step < 16) do
+         local tilecontent = playermap.shiplayer[r + step][c]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r + step, c, SHIPFACING.down
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (r - step > 0) do
+         local tilecontent = playermap.shiplayer[r - step][c]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r - step, c, SHIPFACING.up
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (c + step < 16) do
+         local tilecontent = playermap.shiplayer[r][c + step]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r, c + step, SHIPFACING.right
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (c - step > 0) do
+         local tilencontent = playermap.shiplayer[r][c - step]
+         if tilencontent == 0 then
+            break
+         elseif tilencontent == string.upper(shiptype) then
+            return r, c - step, SHIPFACING.left
+         end
+         step = step + 1
+      end
    end
 end
 
@@ -196,8 +237,6 @@ function playermap:onMouseClick(mx, my, button, other, player)
             local selection = self.shiplayer[row][col]
             local ship = string.upper(selection)
             if string.find(shiptypes_str, ship) then
-               -- here we now that we have a ship
-
                activeshiptype = ship
                moveoption_draw_start_r, moveoption_draw_start_c, facing = getShipFacing(row, col, selection, ship)
 
@@ -214,13 +253,34 @@ function playermap:onMouseClick(mx, my, button, other, player)
                else
                   stepspossible = 0
                end
-
             end
          end
       end
       if button == 2 then
          activeshiptype = ""
          player:resetPreviews()
+      end
+
+      if activeshiptype ~= "" then
+         for cntr = 1, stepspossible do
+            if facing == SHIPFACING.up and col == moveoption_draw_start_c then
+               if row == moveoption_draw_start_r - cntr then
+                  print("We move up: " .. cntr)
+               end
+            elseif facing == SHIPFACING.right and row == moveoption_draw_start_r then
+               if col == moveoption_draw_start_c + cntr then
+                  print("We move right: " .. cntr)
+               end
+            elseif facing == SHIPFACING.down and col == moveoption_draw_start_c then
+               if row == moveoption_draw_start_r + cntr then
+                  print("We moving down: " .. cntr)
+               end
+            elseif facing == SHIPFACING.left and row == moveoption_draw_start_r then
+               if col == moveoption_draw_start_c - cntr then
+                  print("We moving down: " .. cntr)
+               end
+            end
+         end
       end
    else
       activeshiptype = ""
