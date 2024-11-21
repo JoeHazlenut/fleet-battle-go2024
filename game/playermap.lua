@@ -179,9 +179,50 @@ local function getShipFacing (r, c, val, shiptype)
       elseif (c - 1 > 0) and (playermap.shiplayer[r][c - 1] == string.lower(val)) then
          return r, c, SHIPFACING.right
       end
-   else
-      print("Not yet implemented")
-      return 0, 0, 0
+   else -- val is a lower case letter, so we clicked the middle of the ship, we need to find the facing
+      local step = 1
+      while (r + step < 16) do
+         local tilecontent = playermap.shiplayer[r + step][c]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r + step, c, SHIPFACING.down
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (r - step > 0) do
+         local tilecontent = playermap.shiplayer[r - step][c]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r - step, c, SHIPFACING.up
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (c + step < 16) do
+         local tilecontent = playermap.shiplayer[r][c + step]
+         if tilecontent == 0 then
+            break
+         elseif tilecontent == string.upper(shiptype) then
+            return r, c + step, SHIPFACING.right
+         end
+         step = step + 1
+      end
+
+      step = 1
+      while (c - step > 0) do
+         local tilencontent = playermap.shiplayer[r][c - step]
+         if tilencontent == 0 then
+            break
+         elseif tilencontent == string.upper(shiptype) then
+            return r, c - step, SHIPFACING.left
+         end
+         step = step + 1
+      end
    end
 end
 
