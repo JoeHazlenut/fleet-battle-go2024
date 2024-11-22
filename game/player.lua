@@ -23,17 +23,16 @@ player.show_ap = {
 function player:draw (src)
    for cntr = 1, self.ap do
       local ap = self.show_ap[cntr]
-      if not ap.used then
-         if ap.preview then
-            LOVE.graphics.draw(src, apquads.preview, ap.x, ap.y)
-         else
-            LOVE.graphics.draw(src, apquads.ready, ap.x, ap.y)
-         end
+      if ap.preview then
+         LOVE.graphics.draw(src, apquads.preview, ap.x, ap.y)
+      else
+         LOVE.graphics.draw(src, apquads.ready, ap.x, ap.y)
       end
    end
 end
 
 function player:highlightApCosts (pa_code)
+   print("Higlight ap costs")
    local cost = 0
    if pa_code == PLAYER_ACTIONS.descypher then
       cost = 2
@@ -45,17 +44,19 @@ function player:highlightApCosts (pa_code)
    while cost > 0 do
       local ap_ref = self.show_ap[indx]
       if (ap_ref.preview == false) and (ap_ref.used == false) then
+         print("priev")
          ap_ref.preview = true
          cost = cost - 1
       end
       indx = indx - 1
    end
+
    self.pending_action = true
 end
 
 function player:resetPreviews ()
    for indx, ap in ipairs(self.show_ap) do
-      if ap.preview == true and not ap.used then
+      if ap.preview == true and ap.used == false then
          ap.preview = false
       end
    end
@@ -87,6 +88,16 @@ function player:onClick(mx, my)
       self:attack(r, c)
       selected_map:setCurrentCursor(MAPTOOLS.selector)
    end
+end
+
+function player:attack (r, c)
+   self.show_ap[self.ap].used = true
+   Commander.attack(self, r, c)
+end
+
+function player:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
+   self.show_ap[self.ap].used = true
+   Commander.moveShip(self, start_r, start_c, goal_r, goal_c, shipsize, facing)
 end
 
 return player

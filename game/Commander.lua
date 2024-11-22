@@ -34,7 +34,7 @@ end
 
 function Commander:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
    if facing == SHIPFACING.up then
-      for step = 0, shipsize do
+      for step = 0, shipsize - 1 do
          local relocationsign = self.om.shiplayer[start_r + step][start_c]
          self.om.shiplayer[start_r + step][start_c] = 0
          self.om.shiplayer[goal_r + step][goal_c] = relocationsign

@@ -307,7 +307,7 @@ function playermap:onMouseClick(mx, my, button, other, player)
                   break
                end
             end
-         end 
+         end
       end
    else
       activeshiptype = ""
