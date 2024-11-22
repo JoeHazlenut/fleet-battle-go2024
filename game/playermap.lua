@@ -11,6 +11,8 @@ local moveoption_draw_start_c = 0
 local facing = 0
 local activeshipsize = 0
 
+local turntiles = {}
+
 local movemode = 0
 
 local shiptypes_str = "ABCDE"
@@ -64,6 +66,7 @@ function playermap:draw ()
       if activeshiptype ~= "" then
          LOVE.graphics.setColor(1, 1, 0, 0.015)
 
+         -- ------------MOVE------------------
          if movemode == MAPTOOLS.move then
             if facing == SHIPFACING.up then
                for cntr = 1, stepspossible do
@@ -110,45 +113,147 @@ function playermap:draw ()
                   end
                end
             end
+         -- ------------TURN------------------
          elseif movemode == MAPTOOLS.turn then
+
+            local num_tiles_to_draw = activeshipsize - 1
+            -- ----------ship facing up--------------
             if facing == SHIPFACING.up then
                local draw_start_row = moveoption_draw_start_r + activeshipsize - 1
-               for step = 1, activeshipsize - 1 do
-                  if moveoption_draw_start_c - step > 0 and self.shiplayer[draw_start_row][moveoption_draw_start_c - step] == 0 then
+               local draw_left = true
+               local draw_right = true
+
+               if moveoption_draw_start_c - num_tiles_to_draw > 0 then -- left
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[draw_start_row][moveoption_draw_start_c - step] ~= 0 then
+                        draw_left = false
+                     end
+                  end
+               else
+                  draw_left = false
+               end
+
+               if moveoption_draw_start_c + num_tiles_to_draw < 16 then -- right
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[draw_start_row][moveoption_draw_start_c + step] ~= 0 then
+                        draw_right = false
+                     end
+                  end
+               else
+                  draw_right = false
+               end
+
+               for step = 1, num_tiles_to_draw do
+                  if draw_left then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - step) * TILESIZE), (self.region.y + (draw_start_row - 1) * TILESIZE), TILESIZE, TILESIZE)
                   end
-                  if moveoption_draw_start_c + step < 16 and self.shiplayer[draw_start_row][moveoption_draw_start_c + step] == 0 then
+                  if draw_right then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + step) * TILESIZE), (self.region.y + (draw_start_row - 1) * TILESIZE), TILESIZE, TILESIZE)
                   end
                end
+
+            -- -------------ship facing right----------------
             elseif facing == SHIPFACING.right then
-               local draw_start_col = moveoption_draw_start_c - activeshipsize
-               for step = 1, activeshipsize - 1 do
-                  if moveoption_draw_start_r - step > 0 and self.shiplayer[moveoption_draw_start_r - step][draw_start_col] == 0 then
-                     LOVE.graphics.rectangle("fill", (self.region.x + draw_start_col * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - step) * TILESIZE), TILESIZE, TILESIZE)
+               local draw_start_col = moveoption_draw_start_c - activeshipsize + 1
+               local draw_down = true
+               local draw_up = true
+
+               if moveoption_draw_start_r - num_tiles_to_draw > 0 then -- up
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[moveoption_draw_start_r - step][draw_start_col] ~= 0 then
+                        draw_up = false
+                     end
                   end
-                  if moveoption_draw_start_r + step < 16 and self.shiplayer[moveoption_draw_start_r + step][draw_start_col] == 0 then
-                     LOVE.graphics.rectangle("fill", (self.region.x + draw_start_col * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + step) * TILESIZE), TILESIZE, TILESIZE)
+               else
+                  draw_up = false
+               end
+
+               if moveoption_draw_start_r + num_tiles_to_draw < 16 then -- right
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[moveoption_draw_start_r + step][draw_start_col] ~= 0 then
+                        draw_down = false
+                     end
+                  end
+               else
+                  draw_down = false
+               end
+
+               for step = 1, num_tiles_to_draw do
+                  if draw_up then
+                     LOVE.graphics.rectangle("fill", (self.region.x + (draw_start_col - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - step) * TILESIZE), TILESIZE, TILESIZE)
+                  end
+                  if draw_down then
+                     LOVE.graphics.rectangle("fill", (self.region.x + (draw_start_col - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + step) * TILESIZE), TILESIZE, TILESIZE)
                   end
                end
+
+            -- ----------ship facing down ------------------
             elseif facing == SHIPFACING.down then
                local draw_start_row = moveoption_draw_start_r - activeshipsize + 1
-               for step = 1, activeshipsize - 1 do
-                  if moveoption_draw_start_c - step > 0 and self.shiplayer[draw_start_row][moveoption_draw_start_c - step] == 0 then
+               local draw_left = true
+               local draw_right = true
+
+               if moveoption_draw_start_c - num_tiles_to_draw > 0 then -- left
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[draw_start_row][moveoption_draw_start_c - step] ~= 0 then
+                        draw_left = false
+                     end
+                  end
+               else
+                  draw_left = false
+               end
+
+               if moveoption_draw_start_c + num_tiles_to_draw < 16 then -- right
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[draw_start_row][moveoption_draw_start_c + step] ~= 0 then
+                        draw_right = false
+                     end
+                  end
+               else
+                  draw_right = false
+               end
+
+               for step = 1, num_tiles_to_draw do
+                  if draw_left then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - step) * TILESIZE), (self.region.y + (draw_start_row - 1) * TILESIZE), TILESIZE, TILESIZE)
                   end
-                  if moveoption_draw_start_c + step < 16 and self.shiplayer[draw_start_row][moveoption_draw_start_c + step] == 0 then
+                  if draw_right then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + step) * TILESIZE), (self.region.y + (draw_start_row - 1) * TILESIZE), TILESIZE, TILESIZE)
                   end
                end
+
+            -- ------------ship facing left---------------------
             elseif facing == SHIPFACING.left then
-               local draw_start_col = moveoption_draw_start_c + activeshipsize
-               for step = 1, activeshipsize - 1 do
-                  if moveoption_draw_start_r - step > 0 and self.shiplayer[moveoption_draw_start_r - step][draw_start_col] == 0 then
-                     LOVE.graphics.rectangle("fill", (self.region.x + draw_start_col * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - step) * TILESIZE), TILESIZE, TILESIZE)
+               local draw_start_col = moveoption_draw_start_c + activeshipsize - 1
+               local draw_down = true
+               local draw_up = true
+
+               if moveoption_draw_start_r - num_tiles_to_draw > 0 then -- up
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[moveoption_draw_start_r - step][draw_start_col] ~= 0 then
+                        draw_up = false
+                     end
                   end
-                  if moveoption_draw_start_r + step < 16 and self.shiplayer[moveoption_draw_start_r + step][draw_start_col] == 0 then
-                     LOVE.graphics.rectangle("fill", (self.region.x + draw_start_col * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + step) * TILESIZE), TILESIZE, TILESIZE)
+               else
+                  draw_up = false
+               end
+
+               if moveoption_draw_start_r + num_tiles_to_draw < 16 then -- right
+                  for step = 1, num_tiles_to_draw do
+                     if self.shiplayer[moveoption_draw_start_r + step][draw_start_col] ~= 0 then
+                        draw_down = false
+                     end
+                  end
+               else
+                  draw_down = false
+               end
+
+               for step = 1, num_tiles_to_draw do
+                  if draw_up then
+                     LOVE.graphics.rectangle("fill", (self.region.x + (draw_start_col - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - step) * TILESIZE), TILESIZE, TILESIZE)
+                  end
+                  if draw_down then
+                     LOVE.graphics.rectangle("fill", (self.region.x + (draw_start_col - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + step) * TILESIZE), TILESIZE, TILESIZE)
                   end
                end
             end
