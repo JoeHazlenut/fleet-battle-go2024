@@ -67,6 +67,7 @@ function playermap:draw ()
                   if self.shiplayer[moveoption_draw_start_r - cntr][moveoption_draw_start_c] == 0 then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 - cntr) * TILESIZE), TILESIZE, TILESIZE)
                   else
+                     stepspossible = cntr - 1
                      break
                   end
                end
@@ -77,6 +78,7 @@ function playermap:draw ()
                   if self.shiplayer[moveoption_draw_start_r][moveoption_draw_start_c + cntr] == 0 then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 + cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
                   else
+                     stepspossible = cntr - 1
                      break
                   end
                end
@@ -87,6 +89,7 @@ function playermap:draw ()
                   if self.shiplayer[moveoption_draw_start_r + cntr][moveoption_draw_start_c] == 0 then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1 + cntr) * TILESIZE), TILESIZE, TILESIZE)
                   else
+                     stepspossible = cntr - 1
                      break
                   end
                end
@@ -97,6 +100,7 @@ function playermap:draw ()
                   if self.shiplayer[moveoption_draw_start_r][moveoption_draw_start_c - cntr] == 0 then
                      LOVE.graphics.rectangle("fill", (self.region.x + (moveoption_draw_start_c - 1 - cntr) * TILESIZE), (self.region.y + (moveoption_draw_start_r - 1) * TILESIZE), TILESIZE, TILESIZE)
                   else
+                     stepspossible = cntr - 1
                      break
                   end
                end
@@ -258,7 +262,7 @@ function playermap:onMouseClick(mx, my, button, other, player)
                moveoption_draw_start_r, moveoption_draw_start_c, facing = getShipFacing(row, col, selection, ship)
 
                if ship == "A" then
-                  stepspossible = 4
+                  stepspossible = 5
                   activeshipsize = 2
                elseif ship == "B" then
                   stepspossible = 3
