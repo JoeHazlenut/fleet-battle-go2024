@@ -53,6 +53,7 @@ Map.shipquads["D"] = LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESI
 Map.shipquads["E"] = LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 120, 120)
 
 Map.toolquads[MAPTOOLS.move] = LOVE.graphics.newQuad(0, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240)
+Map.toolquads[MAPTOOLS.turn] = LOVE.graphics.newQuad(TILESIZE, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240)
 
 function Map.init(toolimg, shipimg)
    Map.toolimage = toolimg
