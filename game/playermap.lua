@@ -9,6 +9,7 @@ local stepspossible = 0
 local moveoption_draw_start_r = 0
 local moveoption_draw_start_c = 0
 local facing = 0
+local activeshipsize = 0
 
 local shiptypes_str = "ABCDE"
 
@@ -242,14 +243,19 @@ function playermap:onMouseClick(mx, my, button, other, player)
 
                if ship == "A" then
                   stepspossible = 4
+                  activeshipsize = 2
                elseif ship == "B" then
                   stepspossible = 3
+                  activeshipsize = 3
                elseif ship == "C" then
                   stepspossible = 4
+                  activeshipsize = 3
                elseif ship == "D" then
                   stepspossible = 3
+                  activeshipsize = 4
                elseif ship == "E" then
                   stepspossible = 2
+                  activeshipsize = 5
                else
                   stepspossible = 0
                end
@@ -258,6 +264,7 @@ function playermap:onMouseClick(mx, my, button, other, player)
       end
       if button == 2 then
          activeshiptype = ""
+         activeshipsize = 0
          player:resetPreviews()
       end
 
@@ -265,25 +272,46 @@ function playermap:onMouseClick(mx, my, button, other, player)
          for cntr = 1, stepspossible do
             if facing == SHIPFACING.up and col == moveoption_draw_start_c then
                if row == moveoption_draw_start_r - cntr then
-                  print("We move up: " .. cntr)
+                  player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  activeshipsize = 0
+                  activeshiptype = ""
+                  moveoption_draw_start_c = 0
+                  moveoption_draw_start_r = 0
+                  break
                end
             elseif facing == SHIPFACING.right and row == moveoption_draw_start_r then
                if col == moveoption_draw_start_c + cntr then
-                  print("We move right: " .. cntr)
+                  player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  activeshipsize = 0
+                  activeshiptype = ""
+                  moveoption_draw_start_c = 0
+                  moveoption_draw_start_r = 0
+                  break
                end
             elseif facing == SHIPFACING.down and col == moveoption_draw_start_c then
                if row == moveoption_draw_start_r + cntr then
-                  print("We moving down: " .. cntr)
+                  player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  activeshipsize = 0
+                  activeshiptype = ""
+                  moveoption_draw_start_c = 0
+                  moveoption_draw_start_r = 0
+                  break
                end
             elseif facing == SHIPFACING.left and row == moveoption_draw_start_r then
                if col == moveoption_draw_start_c - cntr then
-                  print("We moving down: " .. cntr)
+                  player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  activeshipsize = 0
+                  activeshiptype = ""
+                  moveoption_draw_start_c = 0
+                  moveoption_draw_start_r = 0
+                  break
                end
             end
-         end
+         end 
       end
    else
       activeshiptype = ""
+      activeshipsize = 0
       player:resetPreviews()
    end
 

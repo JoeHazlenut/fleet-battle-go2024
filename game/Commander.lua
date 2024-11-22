@@ -32,7 +32,34 @@ end
 function Commander:decipher ()
 end
 
-function Commander:moveShip (r, c)
+function Commander:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
+   if facing == SHIPFACING.up then
+      for step = 0, shipsize do
+         local relocationsign = self.om.shiplayer[start_r + step][start_c]
+         self.om.shiplayer[start_r + step][start_c] = 0
+         self.om.shiplayer[goal_r + step][goal_c] = relocationsign
+      end
+   elseif facing == SHIPFACING.right then
+      for step = 0, shipsize do
+         local relocationsign = self.om.shiplayer[start_r][start_c - step]
+         self.om.shiplayer[start_r][start_c - step] = 0
+         self.om.shiplayer[goal_r][goal_c - step] = relocationsign
+      end
+   elseif facing == SHIPFACING.down then
+      for step = 0, shipsize do
+         local relocationsign = self.om.shiplayer[start_r - step][start_c]
+         self.om.shiplayer[start_r - step][start_c] = 0
+         self.om.shiplayer[goal_r - step][goal_c] = relocationsign
+      end
+   elseif facing == SHIPFACING.left then
+      for step = 0, shipsize do
+         local relocationsign = self.om.shiplayer[start_r][start_c + step]
+         self.om.shiplayer[start_r][start_c + step] = 0
+         self.om.shiplayer[goal_r][goal_c + step] = relocationsign
+      end
+   end
+
+   self.ap = self.ap - 1
 end
 
 function Commander:turnShip (r, c)
