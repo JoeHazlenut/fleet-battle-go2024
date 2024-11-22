@@ -32,7 +32,6 @@ function player:draw (src)
 end
 
 function player:highlightApCosts (pa_code)
-   print("Higlight ap costs")
    local cost = 0
    if pa_code == PLAYER_ACTIONS.descypher then
       cost = 2
@@ -44,7 +43,6 @@ function player:highlightApCosts (pa_code)
    while cost > 0 do
       local ap_ref = self.show_ap[indx]
       if (ap_ref.preview == false) and (ap_ref.used == false) then
-         print("priev")
          ap_ref.preview = true
          cost = cost - 1
       end

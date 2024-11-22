@@ -88,9 +88,6 @@ function Commander:onClick (mx, my)
       self:attack(r, c)
       selected_map:setCurrentCursor(MAPTOOLS.selector)
    end
-
-   --selected_map:printIL()
-   --selected_map:printSL()
 end
 
 return Commander
