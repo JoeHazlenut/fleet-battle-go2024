@@ -115,7 +115,6 @@ function playermap:draw ()
             end
          -- ------------TURN------------------
          elseif movemode == MAPTOOLS.turn then
-
             local num_tiles_to_draw = activeshipsize - 1
             -- ----------ship facing up--------------
             if facing == SHIPFACING.up then
@@ -476,6 +475,48 @@ function playermap:onMouseClick(mx, my, button, other, player)
                   moveoption_draw_start_c = 0
                   moveoption_draw_start_r = 0
                   break
+               end
+            end
+         end
+
+      elseif activeshiptype ~= "" then
+         local turn_row_up = moveoption_draw_start_r + activeshipsize - 1
+         local turn_col_right = moveoption_draw_start_c - activeshipsize + 1
+         local turn_row_down = moveoption_draw_start_r - activeshipsize + 1
+         local turn_col_left = moveoption_draw_start_c + activeshipsize - 1
+
+         for cntr = 1, activeshipsize - 1 do
+            if facing == SHIPFACING.up and row == turn_row_up then
+               if (col == moveoption_draw_start_c + cntr) then
+                  local goal_c = moveoption_draw_start_c + activeshipsize - 1
+                  player:turnShip(activeshiptype, turn_row_up, moveoption_draw_start_c, turn_row_up, goal_c, activeshipsize, facing)
+               elseif (col == moveoption_draw_start_c - cntr) then
+                  local goal_c = moveoption_draw_start_c - activeshipsize + 1
+                  player:turnShip(activeshiptype, turn_row_up, moveoption_draw_start_c, turn_row_up, goal_c, activeshipsize, facing)
+               end
+            elseif facing == SHIPFACING.right and col == turn_col_right then
+               if (row == moveoption_draw_start_r + cntr) then
+                  local goal_r = moveoption_draw_start_r + activeshipsize - 1
+                  player:turnShip(activeshiptype, moveoption_draw_start_r, turn_col_right, goal_r, turn_col_right, activeshipsize, facing)
+               elseif (row == moveoption_draw_start_r - cntr) then
+                  local goal_r = moveoption_draw_start_r - activeshipsize + 1
+                  player:turnShip(activeshiptype, moveoption_draw_start_r, turn_col_right, goal_r, turn_col_right, activeshipsize, facing)
+               end
+            elseif facing == SHIPFACING.down and row == turn_row_down then
+               if (col == moveoption_draw_start_c + cntr) then
+                  local goal_c = moveoption_draw_start_c + activeshipsize - 1
+                  player:turnShip(activeshiptype, turn_row_down, moveoption_draw_start_c, turn_row_down, goal_c, activeshipsize, facing)
+               elseif (col == moveoption_draw_start_c - cntr) then
+                  local goal_c = moveoption_draw_start_c - activeshipsize + 1
+                  player:turnShip(activeshiptype, turn_row_down, moveoption_draw_start_c, turn_row_down, goal_c, activeshipsize, facing)
+               end
+            elseif facing == SHIPFACING.left and col == turn_col_left then
+               if (row == moveoption_draw_start_r + cntr) then
+                  local goal_r = moveoption_draw_start_r + activeshipsize - 1
+                  player:turnShip(activeshiptype, moveoption_draw_start_r, turn_col_left, goal_r, turn_col_left, activeshipsize, facing)
+               elseif (row == moveoption_draw_start_r - cntr) then
+                  local goal_r = moveoption_draw_start_r - activeshipsize + 1
+                  player:turnShip(activeshiptype, moveoption_draw_start_r, turn_col_left, goal_r, turn_col_left, activeshipsize, facing)
                end
             end
          end

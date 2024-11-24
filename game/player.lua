@@ -98,4 +98,9 @@ function player:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
    Commander.moveShip(self, start_r, start_c, goal_r, goal_c, shipsize, facing)
 end
 
+function player:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
+   self.show_ap[self.ap].used = true
+   Commander.turnShip(self, shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
+end
+
 return player
