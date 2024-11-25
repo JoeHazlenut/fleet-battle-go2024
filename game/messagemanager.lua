@@ -3,7 +3,7 @@ local msg_indx = {clean_msg = 1, decrypted_msg = 2}
 
 local function generatePseudoDecryptedString ()
    math.randomseed(os.time())
-   local len = math.random(18, 28)
+   local len = math.random(35, 45)
    local randostr = ""
    for i = 1, len do
       local option = math.random(1, 3)
@@ -24,7 +24,16 @@ local msgmanager = {
    player_turnmsgdict = {},
    enemy_turnmsgdict = {},
    renderstart_player_x = 270,
-   renderstart_player_y = 445
+   renderstart_player_y = 443,
+   renderstart_enemy_x = 270,
+   renderstart_enemy_y = 492
+}
+
+-- TODO: just for testing, remove 
+msgmanager.enemy_turnmsgdict[1] = {
+   {("Attack position 'E6'."), generatePseudoDecryptedString()},
+   {("Move ship type C fom 'D12' towards south."), generatePseudoDecryptedString()},
+   {("Turn ship type A west."), generatePseudoDecryptedString()}
 }
 
 function msgmanager.reset ()
@@ -83,17 +92,27 @@ end
 function msgmanager.draw ()
    local vertical_offset = 15
    LOVE.graphics.setFont(msgmanager.font)
+
    if msgmanager.player_turnmsgdict[TURN_NUMBER] then
       LOVE.graphics.setColor(0, 1, 0, 1)
       for msg_num = 1, 3 do
          local player_action_msg = msgmanager.player_turnmsgdict[TURN_NUMBER][msg_num]
-         --print(player_action_msg)
          if player_action_msg then
             LOVE.graphics.print(player_action_msg[msg_indx.clean_msg], msgmanager.renderstart_player_x, msgmanager.renderstart_player_y + (msg_num - 1) * vertical_offset)
          end
       end
       LOVE.graphics.setColor(1, 1, 0, 1)
       LOVE.graphics.print("-----------------------------------------------------", msgmanager.renderstart_player_x, msgmanager.renderstart_player_y + 40)
+   end
+
+   if msgmanager.enemy_turnmsgdict[TURN_NUMBER] then
+      LOVE.graphics.setColor(1, 0, 0, 1)
+      for msg_num = 1, 3 do
+         local enemy_action_msg = msgmanager.enemy_turnmsgdict[TURN_NUMBER][msg_num]
+         if enemy_action_msg then
+            LOVE.graphics.print(enemy_action_msg[msg_indx.clean_msg], msgmanager.renderstart_enemy_x, msgmanager.renderstart_enemy_y + (msg_num - 1) * vertical_offset)
+         end
+      end
    end
 end
 
