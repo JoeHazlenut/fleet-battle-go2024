@@ -1,3 +1,5 @@
+TURN_NUMBER = 1
+SHIPFACING = {up = 1, right = 2, down = 3, left = 4}
 ---------------------Internal-------------------
 local images = {
    bg = LOVE.graphics.newImage("assets/new/background.png"),
@@ -16,8 +18,6 @@ local playermap = require "game.playermap"
 local enemymap = require "game.enemymap"
 
 local Maptool = require "game.Maptool"
-
-SHIPFACING = {up = 1, right = 2, down = 3, left = 4}
 
 --TODO: change magic numbers to texture:getWidth etc.
 local maptools = {
@@ -38,7 +38,9 @@ local battleState = {
    buttons = {},
    active_button = nil,
    player = require "game.player":init(playermap, enemymap),
-   enemy = require "game.enemy":init(enemymap, playermap)
+   enemy = require "game.enemy":init(enemymap, playermap),
+   made_move_cntr = 0,
+   messagemanager = require "game.messagemanager"
 }
 
 battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
@@ -70,6 +72,19 @@ function battleState.update (dt)
 
    enemymap:update(dt)
    playermap:update(dt)
+
+   if battleState.active_commander.ap <= 0 then
+      if battleState.active_commander == battleState.player then
+         battleState.active_commander = battleState.enemy
+      else
+         battleState.active_commander = battleState.player
+      end
+      battleState.made_move_cntr = battleState.made_move_cntr + 1
+   end
+
+   if battleState.made_move_cntr >= 2 then
+      TURN_NUMBER = TURN_NUMBER + 1
+   end
 end
 
 function battleState.draw ()
@@ -89,6 +104,8 @@ function battleState.draw ()
    if battleState.active_commander.draw then
       battleState.active_commander:draw(images.apimg)
    end
+
+   battleState.messagemanager.draw()
 
    if DEVHELP and DEVHELP.gridmode then
       DEVHELP.showShips(playermap, enemymap)
@@ -267,6 +284,7 @@ end
 
 function playscreen.reset ()
    playscreen.state = placeShipState
+   TURN_NUMBER = 1
 end
 
 function playscreen.update (dt)

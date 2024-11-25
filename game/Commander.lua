@@ -1,9 +1,11 @@
-
 local Commander = {}
 Commander.__index = Commander
 
 function Commander:new ()
-   local nc = {ap = 3}
+   local nc = {
+      ap = 3,
+      msgturndict = {}
+   }
 
    setmetatable(nc, Commander)
 

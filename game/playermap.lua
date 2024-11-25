@@ -455,22 +455,22 @@ function playermap:onMouseClick(mx, my, button, other, player)
          for cntr = 1, stepspossible do
             if facing == SHIPFACING.up and col == moveoption_draw_start_c then
                if row == moveoption_draw_start_r - cntr then
-                  action_taken = player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  action_taken = player:moveShip(activeshiptype, moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
                   break
                end
             elseif facing == SHIPFACING.right and row == moveoption_draw_start_r then
                if col == moveoption_draw_start_c + cntr then
-                  action_taken = player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  action_taken = player:moveShip(activeshiptype, moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
                   break
                end
             elseif facing == SHIPFACING.down and col == moveoption_draw_start_c then
                if row == moveoption_draw_start_r + cntr then
-                  action_taken = player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  action_taken = player:moveShip(activeshiptype, moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
                   break
                end
             elseif facing == SHIPFACING.left and row == moveoption_draw_start_r then
                if col == moveoption_draw_start_c - cntr then
-                  action_taken = player:moveShip(moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
+                  action_taken = player:moveShip(activeshiptype, moveoption_draw_start_r, moveoption_draw_start_c, row, col, activeshipsize, facing)
                   break
                end
             end
