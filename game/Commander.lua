@@ -33,6 +33,7 @@ function Commander:decipher ()
 end
 
 function Commander:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
+   print("Commander move ship")
    if facing == SHIPFACING.up then
       for step = 0, shipsize - 1 do
          local relocationsign = self.om.shiplayer[start_r + step][start_c]
