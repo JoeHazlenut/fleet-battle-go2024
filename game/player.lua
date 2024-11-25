@@ -91,17 +91,20 @@ end
 function player:attack (r, c)
    self.show_ap[self.ap].used = true
    Commander.attack(self, r, c)
+   return true
 end
 
 function player:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
    print("Player moveship")
    self.show_ap[self.ap].used = true
    Commander.moveShip(self, start_r, start_c, goal_r, goal_c, shipsize, facing)
+   return true
 end
 
 function player:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
    self.show_ap[self.ap].used = true
    Commander.turnShip(self, shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
+   return true
 end
 
 return player
