@@ -109,8 +109,8 @@ end
 
 function player:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
    self.show_ap[self.ap].used = true
-   Commander.turnShip(self, shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
-   msgmanager.logPlayerTurnShip(shiptype, start_c)
+   facing = Commander.turnShip(self, shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
+   msgmanager.logPlayerTurnShip(shiptype, facing)
 
    return true
 end

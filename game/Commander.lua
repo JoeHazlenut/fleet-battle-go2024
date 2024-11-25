@@ -67,43 +67,54 @@ end
 
 function Commander:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
    self.om.shiplayer[goal_r][goal_c] = shiptype
+   local new_facing  = 0
    for cntr = 1, shipsize - 1 do
       if facing == SHIPFACING.up then
          self.om.shiplayer[start_r - cntr][start_c] = 0
 
          if start_c - goal_c > 0 then
             self.om.shiplayer[goal_r][goal_c + cntr] = string.lower(shiptype)
+            new_facing = SHIPFACING.left
          else
             self.om.shiplayer[goal_r][goal_c - cntr] = string.lower(shiptype)
+            new_facing = SHIPFACING.right
          end
       elseif facing == SHIPFACING.right then
          self.om.shiplayer[start_r][start_c + cntr] = 0
 
          if start_r - goal_r > 0 then
             self.om.shiplayer[goal_r + cntr][goal_c] = string.lower(shiptype)
+            new_facing = SHIPFACING.down
          else
             self.om.shiplayer[goal_r - cntr][goal_c] = string.lower(shiptype)
+            new_facing = SHIPFACING.up
          end
       elseif facing == SHIPFACING.down then
          self.om.shiplayer[start_r + cntr][start_c] = 0
 
          if start_c - goal_c > 0 then
             self.om.shiplayer[goal_r][goal_c + cntr] = string.lower(shiptype)
+            new_facing = SHIPFACING.right
          else
             self.om.shiplayer[goal_r][goal_c - cntr] = string.lower(shiptype)
+            new_facing = SHIPFACING.left
          end
       elseif facing == SHIPFACING.left then
          self.om.shiplayer[start_r][start_c - cntr] = 0
 
          if start_r - goal_r > 0 then
             self.om.shiplayer[goal_r + cntr][goal_c] = string.lower(shiptype)
+            new_facing = SHIPFACING.up
          else
             self.om.shiplayer[goal_r - cntr][goal_c] = string.lower(shiptype)
+            new_facing = SHIPFACING.down
          end
       end
    end
 
    self.ap = self.ap - 1
+
+   return new_facing
 end
 
 

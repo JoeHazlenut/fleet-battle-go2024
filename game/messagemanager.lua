@@ -77,7 +77,7 @@ function msgmanager.logPlayerTurnShip (shiptype, facing)
       direction_str = "west"
    end
 
-   msgmanager.player_turnmsgdict[TURN_NUMBER][#msgmanager.player_turnmsgdict[TURN_NUMBER] + 1] = {("Ship type " .. shiptype .. " turn towards " .. direction_str .. "."), generatePseudoDecryptedString()}
+   msgmanager.player_turnmsgdict[TURN_NUMBER][#msgmanager.player_turnmsgdict[TURN_NUMBER] + 1] = {("Turn ship type " .. shiptype .. " towards " .. direction_str .. "."), generatePseudoDecryptedString()}
 end
 
 function msgmanager.draw ()
