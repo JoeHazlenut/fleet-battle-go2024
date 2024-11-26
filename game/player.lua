@@ -93,7 +93,7 @@ end
 function player:attack (r, c)
    self.show_ap[self.ap].used = true
    Commander.attack(self, r, c)
-   msgmanager.logPlayerAttack(r, c)
+   msgmanager.logAttack(COMNMANDER_UID.player, r, c)
 
    return true
 end
@@ -102,7 +102,7 @@ function player:moveShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, 
    print("Player moveship")
    self.show_ap[self.ap].used = true
    Commander.moveShip(self, start_r, start_c, goal_r, goal_c, shipsize, facing)
-   msgmanager.logPlayerMovement(shiptype, facing, start_c, start_r, goal_c, goal_r)
+   msgmanager.logMovement(COMNMANDER_UID.player, shiptype, facing, start_c, start_r, goal_c, goal_r)
 
    return true
 end
@@ -110,7 +110,7 @@ end
 function player:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
    self.show_ap[self.ap].used = true
    facing = Commander.turnShip(self, shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
-   msgmanager.logPlayerTurnShip(shiptype, facing)
+   msgmanager.logTurnShip(COMNMANDER_UID.player, shiptype, facing)
 
    return true
 end
