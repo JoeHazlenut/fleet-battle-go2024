@@ -110,7 +110,7 @@ function msgmanager.draw ()
       for msg_num = 1, 3 do
          local enemy_action_msg = msgmanager.enemy_turnmsgdict[TURN_NUMBER][msg_num]
          if enemy_action_msg then
-            LOVE.graphics.print(enemy_action_msg[msg_indx.clean_msg], msgmanager.renderstart_enemy_x, msgmanager.renderstart_enemy_y + (msg_num - 1) * vertical_offset)
+            LOVE.graphics.print(enemy_action_msg[msg_indx.decrypted_msg], msgmanager.renderstart_enemy_x, msgmanager.renderstart_enemy_y + (msg_num - 1) * vertical_offset)
          end
       end
    end

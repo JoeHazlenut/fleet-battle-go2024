@@ -6,7 +6,6 @@ local images = {
    selectbg = LOVE.graphics.newImage("assets/new/background_select.png"),
    toolimage = LOVE.graphics.newImage("assets/new/tools.png"),
    shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
-   selectimage = LOVE.graphics.newImage("assets/new/place_ship_ui.png"),
    shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
    battlebuttonimg = LOVE.graphics.newImage("assets/new/battle_orders_buttons.png"),
    apimg = LOVE.graphics.newImage("assets/new/ap.png"),
