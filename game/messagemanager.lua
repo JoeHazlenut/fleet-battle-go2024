@@ -2,7 +2,7 @@ local rowstr = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 local msg_indx = {clean_msg = 1, decrypted_msg = 2}
 
 local function generatePseudoDecryptedString ()
-   math.randomseed(os.time())
+   math.randomseed(os.clock())
    local len = math.random(35, 45)
    local randostr = ""
    for i = 1, len do
@@ -16,6 +16,7 @@ local function generatePseudoDecryptedString ()
       end
    end
 
+   print("Generated string: " .. randostr)
    return randostr
 end
 
