@@ -17,9 +17,9 @@ local apquads = {
 local player = Commander:new()
 
 player.show_ap = {
-   {x = 445, y = 319, used = false, preview = false},
-   {x = 473, y = 319, used = false, preview = false},
-   {x = 501, y = 319, used = false, preview = false},
+   {x = 445, y = 365, used = false, preview = false},
+   {x = 473, y = 365, used = false, preview = false},
+   {x = 501, y = 365, used = false, preview = false},
 }
 
 function player:draw (src)

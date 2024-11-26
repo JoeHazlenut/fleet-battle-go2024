@@ -16,7 +16,6 @@ local function generatePseudoDecryptedString ()
       end
    end
 
-   print("Generated string: " .. randostr)
    return randostr
 end
 
