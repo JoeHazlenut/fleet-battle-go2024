@@ -125,4 +125,21 @@ function msgmanager.draw ()
    end
 end
 
+function msgmanager:getMostRecentEnemyMsg ()
+   local current_indx = start_msg_indx
+   local end_indx = start_msg_indx + 6
+
+   local msgs = {}
+
+   while current_indx ~= end_indx do
+      if msgmanager.msgqueue[current_indx].type == COMNMANDER_UID.enemy then
+         table.insert(msgs, msgmanager.msgqueue[current_indx])
+      end
+
+      current_indx = current_indx + 1
+   end
+
+   return msgs[1], msgs[2], msgs[3]
+end
+
 return msgmanager

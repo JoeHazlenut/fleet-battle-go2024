@@ -98,6 +98,14 @@ function player:attack (r, c)
    return true
 end
 
+function player:decipher ()
+   if #msgmanager.msgqueue < 6 then
+      return
+   end
+
+   Commander.decipher(self, msgmanager:getMostRecentEnemyMsg())
+end
+
 function player:moveShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)
    print("Player moveship")
    self.show_ap[self.ap].used = true

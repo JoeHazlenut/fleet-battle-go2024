@@ -30,7 +30,16 @@ function Commander:attack (r, c)
    self.ap = self.ap - 1
 end
 
-function Commander:decipher ()
+function Commander:decipher (msg1, msg2, msg3)
+   if self.ap < 2 then
+      return
+   end
+
+   msg1.show_clean = true
+   msg2.show_clean = true
+   msg3.show_clean = true
+
+   self.ap = self.ap - 2
 end
 
 function Commander:moveShip (start_r, start_c, goal_r, goal_c, shipsize, facing)
