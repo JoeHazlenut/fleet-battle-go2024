@@ -115,4 +115,13 @@ function player:turnShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, 
    return true
 end
 
+function player:resetForTurn ()
+   Commander.resetForTurn(self)
+   for indx, ap in pairs(self.show_ap) do
+      ap.used = false
+      ap.preview = false
+   end
+   self:resetPreviews()
+end
+
 return player

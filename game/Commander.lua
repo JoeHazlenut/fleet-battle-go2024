@@ -4,7 +4,6 @@ Commander.__index = Commander
 function Commander:new ()
    local nc = {
       ap = 3,
-      msgturndict = {}
    }
 
    setmetatable(nc, Commander)
@@ -140,6 +139,10 @@ function Commander:onClick (mx, my)
       self:attack(r, c)
       selected_map:setCurrentCursor(MAPTOOLS.selector)
    end
+end
+
+function Commander:resetForTurn ()
+   self.ap = 3
 end
 
 return Commander

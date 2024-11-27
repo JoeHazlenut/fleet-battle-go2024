@@ -1,4 +1,3 @@
-TURN_NUMBER = 1
 SHIPFACING = {up = 1, right = 2, down = 3, left = 4}
 ---------------------Internal-------------------
 local images = {
@@ -38,7 +37,6 @@ local battleState = {
    active_button = nil,
    player = require "game.player":init(playermap, enemymap),
    enemy = require "game.enemy":init(enemymap, playermap),
-   made_move_cntr = 0,
    messagemanager = require "game.messagemanager"
 }
 
@@ -72,17 +70,17 @@ function battleState.update (dt)
    enemymap:update(dt)
    playermap:update(dt)
 
+   if battleState.active_commander.update then
+      battleState.active_commander:update(dt)
+   end
+
    if battleState.active_commander.ap <= 0 then
       if battleState.active_commander == battleState.player then
          battleState.active_commander = battleState.enemy
       else
          battleState.active_commander = battleState.player
       end
-      battleState.made_move_cntr = battleState.made_move_cntr + 1
-   end
-
-   if battleState.made_move_cntr >= 2 then
-      TURN_NUMBER = TURN_NUMBER + 1
+      battleState.active_commander:resetForTurn()
    end
 end
 
