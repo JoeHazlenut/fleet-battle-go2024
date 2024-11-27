@@ -94,22 +94,30 @@ function msgmanager.logTurnShip (commander_uid, shiptype, facing)
 end
 
 function msgmanager.draw ()
+   if #msgmanager.msgqueue == 0 then
+      return
+   end
+
    local vertical_offset = 15
    local amount = 0
    LOVE.graphics.setFont(msgmanager.font)
 
    local current_indx = start_msg_indx
    local end_indx = start_msg_indx + 6
-   while current_indx ~= start_msg_indx do
-      if msgmanager.msgqueue[current_indx].type == COMNMANDER_UID.player then
+   while current_indx ~= end_indx do
+      if msgmanager.msgqueue[current_indx] then
+         if msgmanager.msgqueue[current_indx].type == COMNMANDER_UID.player then
          LOVE.graphics.setColor(0, 1, 0, 1)
+         else
+            LOVE.graphics.setColor(1, 0, 0, 1)
+         end
+         if msgmanager.msgqueue[current_indx].show_clean then
+            LOVE.graphics.print(msgmanager.msgqueue[current_indx].clean, msgmanager.renderstart_x, msgmanager.renderstart_y + amount * vertical_offset)
+         else
+            LOVE.graphics.print(msgmanager.msgqueue[current_indx].decrypted, msgmanager.renderstart_x, msgmanager.renderstart_y + amount * vertical_offset)
+         end
       else
-         LOVE.graphics.setColor(1, 0, 0, 1)
-      end
-      if msgmanager.msgqueue[current_indx].show_clean then
-         LOVE.graphics.print(msgmanager.msgqueue[current_indx].clean, msgmanager.renderstart_x, msgmanager.renderstart_y + amount * vertical_offset)
-      else
-         LOVE.graphics.print(msgmanager.msgqueue[current_indx].decrypted, msgmanager.renderstart_x, msgmanager.renderstart_y + amount * vertical_offset)
+         break
       end
 
       amount = amount + 1
