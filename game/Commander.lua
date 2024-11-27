@@ -26,8 +26,6 @@ function Commander:attack (r, c)
    else
       self.em.infolayer[r][c] = MAPTOOLS.miss
    end
-
-   self.ap = self.ap - 1
 end
 
 function Commander:decipher (msg1, msg2, msg3)

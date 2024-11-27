@@ -14,6 +14,9 @@ local apquads = {
    preview = LOVE.graphics.newQuad(14, 0, 14, 14, 42, 14)
 }
 
+local attacks = {}
+local frame_wait_cntr = 60
+
 local player = Commander:new()
 
 player.show_ap = {
@@ -92,14 +95,31 @@ end
 
 function player:attack (r, c)
    self.show_ap[self.ap].used = true
-   Commander.attack(self, r, c)
+   attacks[#attacks + 1] = function () Commander.attack(self, r, c) end
    msgmanager.logAttack(COMNMANDER_UID.player, r, c)
+   self.ap = self.ap - 1
 
    return true
 end
 
+function player:executeAttacks ()
+   if #attacks > 0 then
+        if frame_wait_cntr >= 0 then
+            frame_wait_cntr = frame_wait_cntr - 1
+        else
+            local attack = table.remove(attacks, 1)
+            attack()
+            frame_wait_cntr = 60
+        end
+    end
+
+    if #attacks == 0 then
+        return true
+    end
+end
+
 function player:decipher ()
-   if #msgmanager.msgqueue < 6 then
+   if #msgmanager.msgqueue < 3 then
       return
    end
 

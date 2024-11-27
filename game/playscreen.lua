@@ -49,8 +49,12 @@ battleState.active_commander = battleState.player
 function battleState.setUp ()
    enemymap:generateEnemyBoard ()
 
-   battleState.active_commander = battleState.player
+   battleState.active_commander = battleState.enemy
 end
+
+local enemy_attack_phase = false
+local player_attack_phase = false
+local attack_phase_fin = false
 
 function battleState.update (dt)
    local mx, my = LOVE.mouse.getPosition()
@@ -74,13 +78,27 @@ function battleState.update (dt)
       battleState.active_commander:update(dt)
    end
 
-   if battleState.active_commander.ap <= 0 then
-      if battleState.active_commander == battleState.player then
-         battleState.active_commander = battleState.enemy
-      else
-         battleState.active_commander = battleState.player
-      end
-      battleState.active_commander:resetForTurn()
+   if battleState.active_commander == battleState.enemy and battleState.enemy.ap <= 0 then
+      battleState.active_commander = battleState.player
+   elseif battleState.active_commander == battleState.player and battleState.player.ap <= 0 then
+      enemy_attack_phase = true
+   end
+
+   if enemy_attack_phase then
+      player_attack_phase = battleState.enemy:executeAttacks()
+   end
+
+   if player_attack_phase then
+      enemy_attack_phase = false
+      attack_phase_fin = battleState.player:executeAttacks()
+   end
+
+   if attack_phase_fin then
+      player_attack_phase = false
+      battleState.enemy:resetForTurn()
+      battleState.player:resetForTurn()
+      battleState.active_commander = battleState.enemy
+      attack_phase_fin = false
    end
 end
 

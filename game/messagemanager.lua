@@ -1,6 +1,6 @@
 COMNMANDER_UID = {player = 1, enemy = 2}
 
-local rowstr = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"}
+local rowstr = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"}
 local start_msg_indx = 1
 
 local function generatePseudoDecryptedString ()
@@ -127,12 +127,12 @@ end
 
 function msgmanager:getMostRecentEnemyMsg ()
    local current_indx = start_msg_indx
-   local end_indx = start_msg_indx + 6
+   local end_indx = start_msg_indx + math.min(6, #msgmanager.msgqueue)
 
    local msgs = {}
 
    while current_indx ~= end_indx do
-      if msgmanager.msgqueue[current_indx].type == COMNMANDER_UID.enemy then
+      if msgmanager.msgqueue[current_indx].type == COMNMANDER_UID.enemy and msgmanager.msgqueue[current_indx].show_clean == false then
          table.insert(msgs, msgmanager.msgqueue[current_indx])
       end
 
