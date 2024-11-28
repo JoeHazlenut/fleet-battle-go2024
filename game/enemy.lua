@@ -10,6 +10,11 @@ function enemy:update (dt)
     self:chooseAttackPosition()
 end
 
+function enemy:decipher ()
+    -- make the enemy know what the player does
+    msgmanager.logDecipher(COMNMANDER_UID.player)
+end
+
 function enemy:chooseAttackPosition ()
     math.randomseed(os.clock())
     local rando_r = math.random(1, 15)

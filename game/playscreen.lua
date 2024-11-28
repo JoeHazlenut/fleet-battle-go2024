@@ -7,9 +7,21 @@ local images = {
    shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
    shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
    battlebuttonimg = LOVE.graphics.newImage("assets/new/battle_orders_buttons.png"),
+   popupimg = LOVE.graphics.newImage("assets/new/popup.png"),
+   popupbuttonimg = LOVE.graphics.newImage("assets/new/popupbuttons.png"),
    apimg = LOVE.graphics.newImage("assets/new/ap.png"),
    msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
+
+local popupfont = LOVE.graphics.newFont("assets/pixelfont.ttf", 16)
+
+local popup_x = DESIGNWIDTH / 2 - images.popupimg:getWidth() / 2
+local popup_y = DESIGNHEIGHT / 2 - images.popupimg:getHeight() / 2
+local win_txt_x = popup_x + images.popupimg:getWidth() / 2 - popupfont:getWidth("YOU WIN!") / 2
+local loose_txt_x = popup_x + images.popupimg:getWidth() / 2 - popupfont:getWidth("YOU LOOSE!") / 2
+local popup_txt_y = popup_y + 95
+local popup_button_x = DESIGNWIDTH / 2 - 52
+local popup_button_y = DESIGNHEIGHT / 2 + 20
 
 local Map = require "game.Map".init(images.toolimage, images.shipimage)
 local playermap = require "game.playermap"
@@ -37,7 +49,9 @@ local battleState = {
    active_button = nil,
    player = require "game.player":init(playermap, enemymap),
    enemy = require "game.enemy":init(enemymap, playermap),
-   messagemanager = require "game.messagemanager"
+   messagemanager = require "game.messagemanager",
+   popup_again_button = Button:new(images.popupbuttonimg, LOVE.graphics.newQuad(0, 0, 104, 40, 104, 80), LOVE.graphics.newQuad(0, 40, 104, 40, 104, 80), nil, popup_button_x, popup_button_y, 104, 40, nil, "AGAIN", {1, 1, 1, 1}),
+   popup_menu_button = Button:new(images.popupbuttonimg, LOVE.graphics.newQuad(0, 0, 104, 40, 104, 80), LOVE.graphics.newQuad(0, 40, 104, 40, 104, 80), nil, popup_button_x, popup_button_y + 50, 104, 40, function() print("Back to MENU") end, "MENU", {1, 1, 1, 1})
 }
 
 battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
@@ -46,15 +60,23 @@ battleState.buttons.move = Button:new(images.battlebuttonimg, LOVE.graphics.newQ
 battleState.buttons.turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.turn); battleState.player:highlightApCosts(PLAYER_ACTIONS.turn) end, "Turn")
 battleState.active_commander = battleState.player
 
-function battleState.setUp ()
-   enemymap:generateEnemyBoard ()
-
-   battleState.active_commander = battleState.enemy
-end
 
 local enemy_attack_phase = false
 local player_attack_phase = false
 local attack_phase_fin = false
+
+function battleState.setUp ()
+   enemymap:generateEnemyBoard ()
+
+   battleState.active_commander = battleState.enemy
+
+   enemy_attack_phase = false
+   player_attack_phase = false
+   attack_phase_fin = false
+
+   PLAYER_LOST = false
+   PLAYER_WON = false
+end
 
 function battleState.update (dt)
    local mx, my = LOVE.mouse.getPosition()
@@ -74,31 +96,43 @@ function battleState.update (dt)
    enemymap:update(dt)
    playermap:update(dt)
 
-   if battleState.active_commander.update then
-      battleState.active_commander:update(dt)
-   end
+   if not PLAYER_WON and not PLAYER_LOST then
+      if battleState.active_commander.update then
+         battleState.active_commander:update(dt)
+      end
 
-   if battleState.active_commander == battleState.enemy and battleState.enemy.ap <= 0 then
-      battleState.active_commander = battleState.player
-   elseif battleState.active_commander == battleState.player and battleState.player.ap <= 0 then
-      enemy_attack_phase = true
-   end
+      if battleState.active_commander == battleState.enemy and battleState.enemy.ap <= 0 then
+         battleState.active_commander = battleState.player
+      elseif battleState.active_commander == battleState.player and battleState.player.ap <= 0 then
+         enemy_attack_phase = true
+      end
 
-   if enemy_attack_phase then
-      player_attack_phase = battleState.enemy:executeAttacks()
-   end
+      if enemy_attack_phase then
+         player_attack_phase = battleState.enemy:executeAttacks()
+      end
 
-   if player_attack_phase then
-      enemy_attack_phase = false
-      attack_phase_fin = battleState.player:executeAttacks()
-   end
+      if player_attack_phase then
+         enemy_attack_phase = false
+         attack_phase_fin = battleState.player:executeAttacks()
+      end
 
-   if attack_phase_fin then
-      player_attack_phase = false
-      battleState.enemy:resetForTurn()
-      battleState.player:resetForTurn()
-      battleState.active_commander = battleState.enemy
-      attack_phase_fin = false
+      if attack_phase_fin then
+         player_attack_phase = false
+         battleState.enemy:resetForTurn()
+         battleState.player:resetForTurn()
+         battleState.active_commander = battleState.enemy
+         attack_phase_fin = false
+      end
+
+      if enemymap:checkForLost() then
+         PLAYER_WON = true
+      elseif playermap:checkForLost() then
+         PLAYER_LOST = true
+      end
+   else
+      -- do what buttons do
+      battleState.popup_again_button:isMouseInside(mx, my)
+      battleState.popup_menu_button:isMouseInside(mx, my)
    end
 end
 
@@ -124,6 +158,28 @@ function battleState.draw ()
 
    if DEVHELP and DEVHELP.gridmode then
       DEVHELP.showShips(playermap, enemymap)
+   end
+
+   if PLAYER_WON then
+      LOVE.graphics.setColor(0, 0, 0, 0.3)
+      LOVE.graphics.rectangle("fill", 0, 0, DESIGNWIDTH, DESIGNHEIGHT)
+      LOVE.graphics.setColor(1, 1, 1, 1)
+      LOVE.graphics.draw(images.popupimg, popup_x, popup_y)
+      battleState.popup_again_button:draw()
+      battleState.popup_menu_button:draw()
+      LOVE.graphics.setFont(popupfont)
+      LOVE.graphics.setColor(0, 1, 0, 1)
+      LOVE.graphics.print("YOU WIN!", win_txt_x, popup_txt_y)
+   elseif PLAYER_LOST then
+      LOVE.graphics.setFont(popupfont)
+      LOVE.graphics.setColor(0, 0, 0, 0.3)
+      LOVE.graphics.rectangle("fill", 0, 0, DESIGNWIDTH, DESIGNHEIGHT)
+      LOVE.graphics.setColor(1, 1, 1, 1)
+      LOVE.graphics.draw(images.popupimg, popup_x, popup_y)
+      battleState.popup_again_button:draw()
+      battleState.popup_menu_button:draw()
+      LOVE.graphics.setColor(1, 0, 0, 1)
+      LOVE.graphics.print("YOU LOOSE!", loose_txt_x, popup_txt_y)
    end
 end
 
@@ -159,6 +215,20 @@ function battleState.onMouseClick (mx, my, button)
       end
    end
 
+   if PLAYER_LOST or PLAYER_WON then
+      if battleState.popup_again_button.hot then
+         battleState.popup_again_button.action()
+      end
+      if battleState.popup_menu_button.hot then
+         battleState.popup_menu_button.action()
+      end
+   end
+end
+
+function battleState.reset ()
+   enemymap:reset()
+   playermap:reset()
+   battleState.messagemanager.reset()
 end
 
 -------------------PLACESHIPS-------------------
@@ -176,6 +246,11 @@ placeShipState.buttons["D"] = Button:new(images.shipbuttonimg, LOVE.graphics.new
 placeShipState.buttons["E"] = Button:new(images.shipbuttonimg, LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(5 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), LOVE.graphics.newQuad(10 * TILESIZE, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 360, 144), 29 * TILESIZE, 13 * TILESIZE, 4 * TILESIZE, TILESIZE, function () playermap:setCursorToShip("E") return "E", SHIPFACING.left end)
 
 function placeShipState.setUp ()
+   placeShipState.ships_to_place = 5
+   for _, b in pairs(placeShipState.buttons) do
+      b.visible = true
+   end
+   placeShipState.confbutton.visible = true
 end
 
 function placeShipState.update (dt)
@@ -274,6 +349,7 @@ function placeShipState.reset ()
 
    placeShipState.confbutton.active = false
    placeShipState.confbutton.visible = false
+   placeShipState.confbutton.hot = false
 
    placeShipState.selship.facing = SHIPFACING.left
    placeShipState.selship.letter = ""
@@ -283,9 +359,7 @@ end
 --------------------External--------------------
 GAMESTATES = {
    PLACESHIPS = 1,
-   BATTLE = 2,
-   WIN = 3,
-   LOOSE = 4
+   BATTLE = 2
 }
 
 local playscreen = {
@@ -316,6 +390,7 @@ function playscreen.onMouseClick(mx, my, button)
 end
 
 ---------------------------------------Button Actions--------------------------------
-placeShipState.confbutton.action = function () print("confirm"); playscreen.setState(battleState) end
+placeShipState.confbutton.action = function () playscreen.setState(battleState) end
+battleState.popup_again_button.action = function () playscreen.setState(placeShipState) end
 
 return playscreen

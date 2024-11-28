@@ -101,20 +101,4 @@ function enemymap:generateEnemyBoard ()
    self:printSL()
 end
 
---[[function enemymap:onMouseClick(mx, my, button, other)
-   print("Enemy on Clikc")
-   if (mx > self.region.x and mx < self.region.x + self.region.size) and
-   (my > self.region.y and my < self.region.y + self.region.size) then
-      print("In region: " .. self:getCursorKey())
-      local tile_x = math.floor((my - self.region.y) / TILESIZE) + 1
-      local tile_y = math.floor((mx - self.region.x) / TILESIZE) + 1
-      if self:getCursorKey() == MAPTOOLS.shooter then
-         print("Key is Shooter")
-         self.infolayer[tile_x][tile_y] = MAPTOOLS.shooter
-      end
-   end
-
-   Map.onMouseClick(self, mx, my, button, other)
-end]]
-
 return enemymap

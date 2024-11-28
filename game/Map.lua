@@ -118,6 +118,17 @@ function Map:new(type)
    return map
 end
 
+function Map:reset ()
+   for r = 1, 15 do
+      for c = 1, 15 do
+         self.infolayer[r][c] = 0
+         self.shiplayer[r][c] = 0
+      end
+   end
+   self.currentcursor = self.toolquads[MAPTOOLS.selector]
+   self.ursorimg = Map.toolimage
+   self.cursorkey = MAPTOOLS.selector
+end
 
 function Map:update ()
 end
@@ -154,7 +165,6 @@ function Map:setCurrentCursor (key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage
-   print("Cursor set to: " .. key)
 end
 
 function Map:getCursorKey ()
@@ -408,6 +418,18 @@ function Map:pickUpPlacedShip(row, col)
    self.shiplayer[row][col] = 0
 
    return bigtype, facing
+end
+
+function Map:checkForLost ()
+   for _, row in ipairs(self.shiplayer) do
+      for _, tile in ipairs(row) do
+         if tile ~= 0 and tile ~= "X" then
+            return false
+         end
+      end
+   end
+
+   return true
 end
 
 function Map:printSL()

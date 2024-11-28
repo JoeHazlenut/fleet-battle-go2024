@@ -32,7 +32,7 @@ function msgmanager.reset ()
    msgmanager.msgqueue = nil
    collectgarbage()
    msgmanager.msgqueue = {}
-   start_msg_indx = #msgmanager.msgqueue
+   start_msg_indx = 1
 end
 
 function msgmanager.logAttack(commander_uid, r, c)
@@ -44,6 +44,20 @@ function msgmanager.logAttack(commander_uid, r, c)
 
    if #msgmanager.msgqueue > 6 then
       start_msg_indx = start_msg_indx + 1
+   end
+end
+
+function msgmanager.logDecipher (commander_uid)
+   if commander_uid == COMNMANDER_UID.player then
+      msgmanager.msgqueue[#msgmanager.msgqueue+1] = {type = commander_uid, clean = "Activate decryption engine!", decrypted = generatePseudoDecryptedString(), show_clean = true}
+      msgmanager.msgqueue[#msgmanager.msgqueue+1] = {type = commander_uid, clean = "Decipher enemy commands!", decrypted = generatePseudoDecryptedString(), show_clean = true}
+   else
+      msgmanager.msgqueue[#msgmanager.msgqueue+1] = {type = commander_uid, clean = "Activate decryption engine!", decrypted = generatePseudoDecryptedString(), show_clean = false}
+      msgmanager.msgqueue[#msgmanager.msgqueue+1] = {type = commander_uid, clean = "Decipher enemy commands!", decrypted = generatePseudoDecryptedString(), show_clean = false}
+   end
+
+   if #msgmanager.msgqueue > 6 then
+      start_msg_indx = start_msg_indx + 2
    end
 end
 

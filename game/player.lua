@@ -124,7 +124,7 @@ function player:decipher ()
       return
    end
 
-   Commander.decipher(self, msgmanager:getMostRecentEnemyMsg())
+   Commander.decipher(self, COMNMANDER_UID.player, msgmanager:getMostRecentEnemyMsg())
 end
 
 function player:moveShip (shiptype, start_r, start_c, goal_r, goal_c, shipsize, facing)

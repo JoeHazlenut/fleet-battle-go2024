@@ -94,6 +94,10 @@ function LOVE.keypressed (key, scancode, isrepeat)
          DEVHELP.gridmode = not DEVHELP.gridmode
       elseif key == "d" then
          DEVHELP.debugmode = not DEVHELP.debugmode
+      elseif key == "w" then
+         PLAYER_WON = true
+      elseif key == "l" then
+         PLAYER_LOST = true
       end
    end
 end

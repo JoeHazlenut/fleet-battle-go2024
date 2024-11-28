@@ -1,3 +1,5 @@
+local messagemanager = require "game.messagemanager"
+
 local Commander = {}
 Commander.__index = Commander
 
@@ -28,7 +30,7 @@ function Commander:attack (r, c)
    end
 end
 
-function Commander:decipher (msg1, msg2, msg3)
+function Commander:decipher (who, msg1, msg2, msg3)
    if self.ap < 2 then
       return
    end
@@ -36,6 +38,8 @@ function Commander:decipher (msg1, msg2, msg3)
    msg1.show_clean = true
    msg2.show_clean = true
    msg3.show_clean = true
+
+   messagemanager.logDecipher(who)
 
    self.ap = self.ap - 2
 end
