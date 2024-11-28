@@ -130,6 +130,7 @@ end
 function battleState.onMouseClick (mx, my, button)
    for key, tool in ipairs(maptools) do
       if tool.active then
+         print("Tool set to " .. key)
          playermap:setCurrentCursor(key)
          enemymap:setCurrentCursor(key)
       end

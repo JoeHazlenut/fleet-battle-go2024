@@ -87,6 +87,7 @@ function player:onClick(mx, my)
    local actioncode = selected_map:getCursorKey()
 
    if actioncode == MAPTOOLS.shooter then
+      selected_map.infolayer[r][c] = MAPTOOLS.shooter
       self.show_ap[self.ap].used = true -- this is the difference to the metatables method
       self:attack(r, c)
       selected_map:setCurrentCursor(MAPTOOLS.selector)

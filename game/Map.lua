@@ -154,6 +154,7 @@ function Map:setCurrentCursor (key)
    self.cursorkey = key
    self.currentcursor = Map.toolquads[key]
    self.cursorimg = Map.toolimage
+   print("Cursor set to: " .. key)
 end
 
 function Map:getCursorKey ()
