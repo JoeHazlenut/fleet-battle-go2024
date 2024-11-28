@@ -47,8 +47,6 @@ function playermap:draw ()
                rotation = math.rad(-90)
                roffsetx = TILESIZE
                roffsety = 0
-            else
-               error("FATAL: Ship does not seem to have any adjacend tiles, which should not happen!")
             end
 
             if activeshiptype == col then

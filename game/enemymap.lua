@@ -97,8 +97,6 @@ function enemymap:generateEnemyBoard ()
          end
       end
    end
-
-   self:printSL()
 end
 
 return enemymap

@@ -42,4 +42,8 @@ function enemy:executeAttacks ()
     end
 end
 
+function enemy:reset ()
+    attacks = {}
+end
+
 return enemy

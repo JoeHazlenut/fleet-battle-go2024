@@ -68,6 +68,11 @@ local attack_phase_fin = false
 function battleState.setUp ()
    enemymap:generateEnemyBoard ()
 
+   battleState.player.ap = 3
+   battleState.enemy.ap = 3
+   battleState.enemy:reset()
+   battleState.player:resetForTurn()
+
    battleState.active_commander = battleState.enemy
 
    enemy_attack_phase = false
@@ -130,7 +135,6 @@ function battleState.update (dt)
          PLAYER_LOST = true
       end
    else
-      -- do what buttons do
       battleState.popup_again_button:isMouseInside(mx, my)
       battleState.popup_menu_button:isMouseInside(mx, my)
    end

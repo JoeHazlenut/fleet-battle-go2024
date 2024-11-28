@@ -36,12 +36,12 @@ end
 
 function devhelp.showSystemMetrics ()
    LOVE.graphics.setColor(0, 0, 0, 0.1)
-   LOVE.graphics.rectangle("fill", 0, 620, 200, 100)
+   LOVE.graphics.rectangle("fill", 0, 420, 200, 100)
 
    LOVE.graphics.setFont(devhelp.font)
    LOVE.graphics.setColor(0, 0, 0, 1)
-   LOVE.graphics.print("FPS: " .. LOVE.timer.getFPS(), 10, 640)
-   LOVE.graphics.print("MEM: " .. collectgarbage("count"), 10, 680)
+   LOVE.graphics.print("FPS: " .. LOVE.timer.getFPS(), 10, 440)
+   LOVE.graphics.print("MEM: " .. collectgarbage("count"), 10, 480)
 end
 
 function devhelp.showShips (playermap, enemymap)

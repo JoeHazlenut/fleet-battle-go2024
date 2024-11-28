@@ -78,7 +78,7 @@ function LOVE.keypressed (key, scancode, isrepeat)
 
          translationfactor.x = math.floor(screenw / 2 - (SCALEFACTOR * DESIGNWIDTH) / 2)
          translationfactor.y = math.floor(screenh / 2 - (SCALEFACTOR * DESIGNHEIGHT) / 2)
-         
+
          INPUTCORRECTION = 1 / SCALEFACTOR
       else
          SCALEFACTOR = 1
