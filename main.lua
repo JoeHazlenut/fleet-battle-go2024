@@ -3,7 +3,6 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
 end
 
 LOVE = require "love"
-
 ------------------Window-Variables-----------------------
 DESIGNWIDTH = 960
 DESIGNHEIGHT = 540
@@ -16,6 +15,13 @@ INPUTCORRECTION = 1 / SCALEFACTOR
 local current_screen = {draw = function (scale) LOVE.graphics.clear(1, 0, 0, 1) end}
 
 ---------------------------LOAD---------------------------
+
+function CHANGE_SCREEN (screen)
+   current_screen = nil
+   collectgarbage()
+   current_screen = screen
+end
+
 function LOVE.load (arg)
    for _, option in pairs(arg) do
       if option == "-d" then
@@ -25,7 +31,12 @@ function LOVE.load (arg)
 
    LOVE.graphics.setDefaultFilter("nearest", "nearest")
 
-   current_screen = require "game.titlescreen"
+   SCREENS = {
+      titlescreen = require "game.titlescreen",
+      playscreen = require "game.playscreen"
+   }
+
+   CHANGE_SCREEN(SCREENS.titlescreen)
 
    collectgarbage()
 end

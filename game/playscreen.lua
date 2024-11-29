@@ -51,13 +51,13 @@ local battleState = {
    enemy = require "game.enemy":init(enemymap, playermap),
    messagemanager = require "game.messagemanager",
    popup_again_button = Button:new(images.popupbuttonimg, LOVE.graphics.newQuad(0, 0, 104, 40, 104, 80), LOVE.graphics.newQuad(0, 40, 104, 40, 104, 80), nil, popup_button_x, popup_button_y, 104, 40, nil, "AGAIN", {1, 1, 1, 1}),
-   popup_menu_button = Button:new(images.popupbuttonimg, LOVE.graphics.newQuad(0, 0, 104, 40, 104, 80), LOVE.graphics.newQuad(0, 40, 104, 40, 104, 80), nil, popup_button_x, popup_button_y + 50, 104, 40, function() print("Back to MENU") end, "MENU", {1, 1, 1, 1})
+   popup_menu_button = Button:new(images.popupbuttonimg, LOVE.graphics.newQuad(0, 0, 104, 40, 104, 80), LOVE.graphics.newQuad(0, 40, 104, 40, 104, 80), nil, popup_button_x, popup_button_y + 50, 104, 40, function() CHANGE_SCREEN(SCREENS.titlescreen) end, "MENU", {1, 1, 1, 1})
 }
 
-battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack")
-battleState.buttons.decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 400, 84, 33, function() battleState.player:decipher() end, "Decipher")
-battleState.buttons.move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.move); battleState.player:highlightApCosts(PLAYER_ACTIONS.move) end, "Move")
-battleState.buttons.turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.turn); battleState.player:highlightApCosts(PLAYER_ACTIONS.turn) end, "Turn")
+battleState.buttons.attack = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 66, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 66, 84, 33, 252, 99), 769, 469, 84, 33, function() enemymap:setCurrentCursor(MAPTOOLS.shooter); battleState.player:highlightApCosts(PLAYER_ACTIONS.attack) end, "Attack", nil, 8)
+battleState.buttons.decipher = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 33, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 33, 84, 33, 252, 99), 438, 400, 84, 33, function() battleState.player:decipher() end, "Decipher", nil, 8)
+battleState.buttons.move = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 446, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.move); battleState.player:highlightApCosts(PLAYER_ACTIONS.move) end, "Move", nil, 8)
+battleState.buttons.turn = Button:new(images.battlebuttonimg, LOVE.graphics.newQuad(0, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(84, 0, 84, 33, 252, 99), LOVE.graphics.newQuad(168, 0, 84, 33, 252, 99), 107, 492, 84, 33, function() playermap:setCurrentCursor(MAPTOOLS.turn); battleState.player:highlightApCosts(PLAYER_ACTIONS.turn) end, "Turn", nil, 8)
 battleState.active_commander = battleState.player
 
 
