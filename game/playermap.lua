@@ -1,6 +1,6 @@
 local Map = require "game.Map"
 
-local activeshipimg = LOVE.graphics.newImage("assets/new/ships_active.png")
+local activeshipimg = LOVE.graphics.newImage("assets/ships_active.png")
 local activeshiptype = ""
 
 local playermap = Map:new(Map.types.player)

@@ -1,15 +1,15 @@
 SHIPFACING = {up = 1, right = 2, down = 3, left = 4}
 ---------------------Internal-------------------
 local images = {
-   bg = LOVE.graphics.newImage("assets/new/background.png"),
-   selectbg = LOVE.graphics.newImage("assets/new/background_select.png"),
-   toolimage = LOVE.graphics.newImage("assets/new/tools.png"),
-   shipimage = LOVE.graphics.newImage("assets/new/ships.png"),
-   shipbuttonimg = LOVE.graphics.newImage("assets/new/ships_buttons.png"),
-   battlebuttonimg = LOVE.graphics.newImage("assets/new/battle_orders_buttons.png"),
-   popupimg = LOVE.graphics.newImage("assets/new/popup.png"),
-   popupbuttonimg = LOVE.graphics.newImage("assets/new/popupbuttons.png"),
-   apimg = LOVE.graphics.newImage("assets/new/ap.png"),
+   bg = LOVE.graphics.newImage("assets/background.png"),
+   selectbg = LOVE.graphics.newImage("assets/background_select.png"),
+   toolimage = LOVE.graphics.newImage("assets/tools.png"),
+   shipimage = LOVE.graphics.newImage("assets/ships.png"),
+   shipbuttonimg = LOVE.graphics.newImage("assets/ships_buttons.png"),
+   battlebuttonimg = LOVE.graphics.newImage("assets/battle_orders_buttons.png"),
+   popupimg = LOVE.graphics.newImage("assets/popup.png"),
+   popupbuttonimg = LOVE.graphics.newImage("assets/popupbuttons.png"),
+   apimg = LOVE.graphics.newImage("assets/ap.png"),
    msgfont = LOVE.graphics.newFont("assets/pixelfont.ttf")
 }
 

@@ -25,7 +25,7 @@ function LOVE.load (arg)
 
    LOVE.graphics.setDefaultFilter("nearest", "nearest")
 
-   current_screen = require "game/playscreen"
+   current_screen = require "game.titlescreen"
 
    collectgarbage()
 end
