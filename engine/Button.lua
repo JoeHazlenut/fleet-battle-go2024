@@ -24,8 +24,8 @@ function Button:new (img, normalq, hoverq, selectedq, x, y, w, h, callback, text
 
    if newbutton.txt then
       newbutton.txtsize = textsize or 8
-      newbutton.specialfont = LOVE.graphics.newFont("assets/pixelfont.ttf", textsize)
       if newbutton.txtsize ~= 8 then
+         newbutton.specialfont = LOVE.graphics.newFont("assets/pixelfont.ttf", textsize)
          newbutton.txtx = newbutton.x + (newbutton.w / 2) - (newbutton.specialfont:getWidth(newbutton.txt) / 2)
          newbutton.txty = newbutton.y + (newbutton.h / 2) - (newbutton.specialfont:getHeight(newbutton.txt) / 2)
       else
