@@ -90,12 +90,14 @@ function battleState.update (dt)
       my = my * INPUTCORRECTION
    end
 
-   for _, tool in ipairs(maptools) do
-      tool:update(mx, my)
-   end
+   if player_attack_phase == false and enemy_attack_phase == false then
+      for _, tool in ipairs(maptools) do
+         tool:update(mx, my)
+      end
 
-   for _, b in pairs(battleState.buttons) do
-      b:isMouseInside(mx, my)
+      for _, b in pairs(battleState.buttons) do
+         b:isMouseInside(mx, my)
+      end
    end
 
    enemymap:update(dt)
@@ -188,6 +190,11 @@ function battleState.draw ()
 end
 
 function battleState.onMouseClick (mx, my, button)
+
+   if enemy_attack_phase or player_attack_phase then
+      return
+   end
+
    for key, tool in ipairs(maptools) do
       if tool.active then
          print("Tool set to " .. key)
