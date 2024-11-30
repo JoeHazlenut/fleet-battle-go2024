@@ -20,8 +20,15 @@ local buttons = {
 
 local titlescreen = {}
 
-function titlescreen.update (dt)
+function titlescreen.reset()
+   for _, b in pairs(buttons) do
+      b.active = false
+      b.hot = false
+      b.visible = true
+   end
+end
 
+function titlescreen.update (dt)
    local mx, my = LOVE.mouse.getPosition()
    if SCALEFACTOR ~= 1 then
       mx = mx * INPUTCORRECTION

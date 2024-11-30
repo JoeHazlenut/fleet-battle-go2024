@@ -20,6 +20,7 @@ function CHANGE_SCREEN (screen)
    current_screen = nil
    collectgarbage()
    current_screen = screen
+   current_screen.reset()
 end
 
 function LOVE.load (arg)

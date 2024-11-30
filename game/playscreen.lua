@@ -377,8 +377,7 @@ function playscreen.setState (new_state)
 end
 
 function playscreen.reset ()
-   playscreen.state = placeShipState
-   TURN_NUMBER = 1
+   playscreen.setState(placeShipState)
 end
 
 function playscreen.update (dt)
