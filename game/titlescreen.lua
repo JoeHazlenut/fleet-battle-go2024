@@ -13,9 +13,10 @@ local button_x = DESIGNWIDTH / 2 - 68
 local button_y = DESIGNHEIGHT / 2
 
 local buttons = {
-   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 50, 136, 40, function() CHANGE_SCREEN(SCREENS.playscreen) end, "PLAY", {0.73, 0.6, 0.38, 1}, 16),
-   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 100, 136, 40, function() print("Settings") end, "SETTINGS", {0.73, 0.6, 0.38, 1}, 16),
-   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 150, 136, 40, function() LOVE.event.quit() end, "QUIT", {0.73, 0.6, 0.38, 1}, 16),
+   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 21, 136, 40, function() CHANGE_SCREEN(SCREENS.playscreen) end, "PLAY", {0.73, 0.6, 0.38, 1}, 16),
+   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 71, 136, 40, function() print("Manual") end, "MANUAL", {0.73, 0.6, 0.38, 1}, 16),
+   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 121, 136, 40, function() print("Settings") end, "SETTINGS", {0.73, 0.6, 0.38, 1}, 16),
+   Button:new(images.buttonimg, LOVE.graphics.newQuad(0, 0, 136, 40, 136, 80), LOVE.graphics.newQuad(0, 40, 136, 40, 136, 80), nil, button_x, button_y + 200, 136, 40, function() LOVE.event.quit() end, "QUIT", {0.75, 0.4, 0.28, 1}, 16),
 }
 
 local titlescreen = {}
