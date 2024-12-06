@@ -103,7 +103,7 @@ function battleState.update (dt)
    enemymap:update(dt)
    playermap:update(dt)
 
-   if not PLAYER_WON and not PLAYER_LOST then
+   if PLAYER_WON == false and PLAYER_LOST == false then
       if battleState.active_commander.update then
          battleState.active_commander:update(dt)
       end
@@ -133,7 +133,11 @@ function battleState.update (dt)
 
       if enemymap:checkForLost() then
          PLAYER_WON = true
+         player_attack_phase = false
+         enemy_attack_phase = false
       elseif playermap:checkForLost() then
+         player_attack_phase = false
+         enemy_attack_phase = false
          PLAYER_LOST = true
       end
    else
@@ -192,6 +196,7 @@ end
 function battleState.onMouseClick (mx, my, button)
 
    if enemy_attack_phase or player_attack_phase then
+      print("no clicks")
       return
    end
 
