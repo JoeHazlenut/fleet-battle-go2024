@@ -22,8 +22,43 @@ end
 
 function Commander:attack (r, c)
    local target = self.em.shiplayer[r][c]
+   local shiptype = string.upper(target)
+   local new_symbol = ""
+
+   if shiptype == "A" then
+      if target == shiptype then
+         new_symbol = "F"
+      else
+         new_symbol = "f"
+      end
+   elseif shiptype == "B" then
+      if target == shiptype then
+         new_symbol = "G"
+      else
+         new_symbol = "g"
+      end
+   elseif shiptype == "C" then
+      if target == shiptype then
+         new_symbol = "H"
+      else
+         new_symbol = "h"
+      end
+   elseif shiptype == "D" then
+      if target == shiptype then
+         new_symbol = "I"
+      else
+         new_symbol = "i"
+      end
+   elseif shiptype == "E" then
+      if target == shiptype then
+         new_symbol = "J"
+      else
+         new_symbol = "j"
+      end
+   end
+
    if target ~= 0 then
-      self.em.shiplayer[r][c] = "X"
+      self.em.shiplayer[r][c] = new_symbol
       self.em.infolayer[r][c] = MAPTOOLS.hit
    else
       self.em.infolayer[r][c] = MAPTOOLS.miss

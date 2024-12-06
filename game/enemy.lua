@@ -15,7 +15,16 @@ function enemy:decipher ()
     msgmanager.logDecipher(COMNMANDER_UID.player)
 end
 
+local first = false
 function enemy:chooseAttackPosition ()
+    if not first then
+        attacks[#attacks + 1] = function () self:attack(1, 1) end
+        msgmanager.logAttack(COMNMANDER_UID.enemy, 1, 1)
+        first = true
+        self.ap = self.ap - 1
+        return
+    end
+
     math.randomseed(os.clock())
     local rando_r = math.random(1, 15)
     local rando_c = math.random(1, 15)

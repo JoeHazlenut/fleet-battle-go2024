@@ -16,6 +16,7 @@ local turntiles = {}
 local movemode = 0
 
 local shiptypes_str = "ABCDE"
+local hit_str = "FGHIJ"
 
 function playermap:draw ()
    local mx, my = LOVE.mouse.getPosition()
@@ -54,7 +55,46 @@ function playermap:draw ()
             else
                LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
             end
+
+         elseif string.find(hit_str, col) then
+            local corresponding_letter = ""
+            if col == "F" then
+               corresponding_letter = "a"
+            elseif col == "G" then
+               corresponding_letter = "b"
+            elseif col == "H" then
+               corresponding_letter = "c"
+            elseif col == "I" then
+               corresponding_letter = "d"
+            elseif col == "J" then
+               corresponding_letter = "e"
+            end
+
+            if (tilenumber + 1) < 16 and (row[tilenumber + 1] == string.lower(col) or row[tilenumber + 1] == corresponding_letter) then
+               rotation = math.rad(0)
+               roffsetx = 0
+               roffsety = 0
+            elseif (tilenumber - 1) > 0 and (row[tilenumber - 1] == string.lower(col) or row[tilenumber - 1] == corresponding_letter) then
+               rotation = math.rad(180)
+               roffsetx = TILESIZE
+               roffsety = TILESIZE
+            elseif (rownumber + 1) < 16 and (self.shiplayer[rownumber + 1][tilenumber] == string.lower(col) or self.shiplayer[rownumber + 1][tilenumber] == corresponding_letter) then
+               rotation = math.rad(90)
+               roffsetx = 0
+               roffsety = TILESIZE
+            elseif (rownumber - 1) > 0 and (self.shiplayer[rownumber - 1][tilenumber] == string.lower(col) or self.shiplayer[rownumber - 1][tilenumber] == corresponding_letter) then
+               rotation = math.rad(-90)
+               roffsetx = TILESIZE
+               roffsety = 0
+            end
+
+            if activeshiptype == col then
+               LOVE.graphics.draw(activeshipimg, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
+            else
+               LOVE.graphics.draw(Map.shipimage, Map.shipquads[col], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE, rotation, nil, nil, roffsetx, roffsety)
+            end
          end
+
 
          if self.infolayer[rownumber][tilenumber] ~= 0 then
             LOVE.graphics.draw(Map.toolimage, Map.toolquads[self.infolayer[rownumber][tilenumber]], self.region.x + (tilenumber - 1) * TILESIZE, self.region.y + (rownumber - 1) * TILESIZE)

@@ -4,7 +4,12 @@ SHIPTYPES = {
    boad3 = "B",
    sub3 = "C",
    boad4 = "D",
-   boad5 = "E"
+   boad5 = "E",
+   sub2_hit = "F",
+   boad3_hit = "G",
+   sub3_hit = "H",
+   boad4_hit = "I",
+   boad5_hit = "J"
 }
 
 MAPTOOLS = {
@@ -51,6 +56,12 @@ Map.shipquads["B"] = LOVE.graphics.newQuad(0, 1 * TILESIZE, 3 * TILESIZE, TILESI
 Map.shipquads["C"] = LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 120, 120)
 Map.shipquads["D"] = LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 120, 120)
 Map.shipquads["E"] = LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 120, 120)
+
+Map.shipquads["F"] = LOVE.graphics.newQuad(0, 0, 2 * TILESIZE, TILESIZE, 120, 120)
+Map.shipquads["G"] = LOVE.graphics.newQuad(0, 1 * TILESIZE, 3 * TILESIZE, TILESIZE, 120, 120)
+Map.shipquads["H"] = LOVE.graphics.newQuad(0, 2 * TILESIZE, 3 * TILESIZE, TILESIZE, 120, 120)
+Map.shipquads["I"] = LOVE.graphics.newQuad(0, 3 * TILESIZE, 4 * TILESIZE, TILESIZE, 120, 120)
+Map.shipquads["J"] = LOVE.graphics.newQuad(0, 4 * TILESIZE, 5 * TILESIZE, TILESIZE, 120, 120)
 
 Map.toolquads[MAPTOOLS.move] = LOVE.graphics.newQuad(0, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240)
 Map.toolquads[MAPTOOLS.turn] = LOVE.graphics.newQuad(TILESIZE, 8 * TILESIZE, TILESIZE, TILESIZE, 72, 240)
