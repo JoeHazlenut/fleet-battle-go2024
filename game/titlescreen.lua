@@ -1,7 +1,7 @@
 local Button = require "engine.Button"
 
 local images = {
-   bgimg = LOVE.graphics.newImage("assets/titlescreen.png"),
+   bgimg = LOVE.graphics.newImage("assets/titlescreen1.png"),
    buttonimg = LOVE.graphics.newImage("assets/titlebuttons.png")
 }
 

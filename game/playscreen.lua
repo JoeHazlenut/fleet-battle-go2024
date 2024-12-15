@@ -196,7 +196,6 @@ end
 function battleState.onMouseClick (mx, my, button)
 
    if enemy_attack_phase or player_attack_phase then
-      print("no clicks")
       return
    end
 
